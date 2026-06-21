@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-syne), var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body: var(--font-syne), var(--font-plus-jakarta-sans), system-ui, sans-serif;
+  --font-syne: var(--font-syne), sans-serif;
+  --font-signature: var(--font-mr-de-haviland), cursive;
+  
+  
+  --animate-float-slow: float-slow 8s ease-in-out infinite;
+  --animate-float-medium: float-medium 6s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 20s linear infinite;
+  --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
+  --animate-grid-drift: grid-drift 40s linear infinite;
+  --animate-fade-in-up: fade-in-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+  @keyframes float-medium {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(-2deg); }
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.05); }
+  }
+  @keyframes grid-drift {
+    0% { background-position: 0px 0px; }
+    100% { background-position: 50px 100px; }
+  }
+  @keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(10px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+:root {
+  color-scheme: dark;
+  --cursor-x: 0px;
+  --cursor-y: 0px;
+}
+
+body {
+  background-color: #080808;
+  color: #f3f4f6;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.15);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 255, 0.4);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom cursor hover states for items with custom cursor text */
+.interactive-hover-target {
+  cursor: none;
+}
+
+/* Glowing text effects */
+.glow-text-cyan {
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+}
+
+/* Glassmorphism utility card */
+.glass-panel {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(20, 20, 20, 0.8);
+  border-color: rgba(0, 229, 255, 0.25);
+  box-shadow: 0 10px 30px -10px rgba(0, 229, 255, 0.15);
+}
+
+/* Outer vignette screen frame */
+.viewport-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.015);
+}
