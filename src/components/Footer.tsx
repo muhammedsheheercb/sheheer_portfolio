@@ -7,7 +7,8 @@ import { GithubIcon as Github, LinkedinIcon as Linkedin } from "@/components/ico
 const TECH_TAGS = [
   "React", "Next.js", "TypeScript", "Node.js", "Express", 
   "MongoDB", "SQL", "Tailwind", "CSS", "GSAP", 
-  "Framer Motion", "Figma", "Redux", "Git", "REST APIs", "MERN Stack"
+  "Framer Motion", "Figma", "Redux", "Git", "REST APIs", "MERN Stack",
+  "JS", "HTML", "TANSTACK QUERY", "BOOTSTRAP", "HONO", "CLEAN ARCHITECTURE", "RAZORPAY", "DSA"
 ];
 
 interface PhysicsBody {
@@ -36,7 +37,7 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       }
       ctx.fillStyle = "#00d8ff";
       ctx.beginPath();
-      ctx.arc(x, y, 1.2, 0, 2 * Math.PI);
+      ctx.arc(x, y, size * 0.12, 0, 2 * Math.PI);
       ctx.fill();
       break;
     }
@@ -59,10 +60,10 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       ctx.fillStyle = "#3178c6";
       ctx.fillRect(x - size / 2, y - size / 2, size, size);
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 5px sans-serif";
+      ctx.font = `bold ${Math.round(size * 0.5)}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("TS", x, y + 0.5);
+      ctx.fillText("TS", x, y + size * 0.05);
       break;
     }
     case "NODE.JS": {
@@ -82,10 +83,10 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       ctx.arc(x, y, size / 2, 0, 2 * Math.PI);
       ctx.fill();
       ctx.fillStyle = "#000000";
-      ctx.font = "bold 6px sans-serif";
+      ctx.font = `bold ${Math.round(size * 0.55)}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("ex", x, y - 0.5);
+      ctx.fillText("ex", x, y - size * 0.05);
       break;
     }
     case "MONGODB": {
@@ -105,7 +106,7 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       ctx.lineWidth = 0.8;
       for (let i = -1; i <= 1; i++) {
         ctx.beginPath();
-        ctx.ellipse(x, y + i * 2.2, size / 2, size / 6, 0, 0, 2 * Math.PI);
+        ctx.ellipse(x, y + i * (size * 0.22), size / 2, size / 6, 0, 0, 2 * Math.PI);
         ctx.fill();
         ctx.stroke();
       }
@@ -143,7 +144,7 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       ctx.arc(x, y, size / 2, 0, 2 * Math.PI);
       ctx.fill();
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 5px sans-serif";
+      ctx.font = `bold ${Math.round(size * 0.55)}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("G", x, y);
@@ -182,7 +183,7 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       ctx.stroke();
       ctx.fillStyle = "#764abc";
       ctx.beginPath();
-      ctx.arc(x, y, 2, 0, 2 * Math.PI);
+      ctx.arc(x, y, size * 0.18, 0, 2 * Math.PI);
       ctx.fill();
       break;
     }
@@ -195,8 +196,8 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       ctx.stroke();
       ctx.fillStyle = "#f05032";
       ctx.beginPath();
-      ctx.arc(x - size / 3, y + size / 3, 1.5, 0, 2 * Math.PI);
-      ctx.arc(x + size / 3, y - size / 3, 1.5, 0, 2 * Math.PI);
+      ctx.arc(x - size / 3, y + size / 3, size * 0.15, 0, 2 * Math.PI);
+      ctx.arc(x + size / 3, y - size / 3, size * 0.15, 0, 2 * Math.PI);
       ctx.fill();
       break;
     }
@@ -204,7 +205,7 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
       ctx.fillStyle = "#ffb300";
       ctx.fillRect(x - size / 2, y - size / 4, size, size / 2);
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 4px sans-serif";
+      ctx.font = `bold ${Math.round(size * 0.35)}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("API", x, y);
@@ -213,22 +214,125 @@ const drawLogo = (ctx: CanvasRenderingContext2D, label: string, x: number, y: nu
     case "MERN STACK": {
       ctx.fillStyle = "#00e5ff";
       ctx.beginPath();
-      ctx.arc(x - 2, y - 2, 1.5, 0, 2 * Math.PI);
-      ctx.arc(x + 2, y - 2, 1.5, 0, 2 * Math.PI);
-      ctx.arc(x, y + 2, 1.5, 0, 2 * Math.PI);
+      ctx.arc(x - size * 0.2, y - size * 0.2, size * 0.15, 0, 2 * Math.PI);
+      ctx.arc(x + size * 0.2, y - size * 0.2, size * 0.15, 0, 2 * Math.PI);
+      ctx.arc(x, y + size * 0.2, size * 0.15, 0, 2 * Math.PI);
       ctx.fill();
+      break;
+    }
+    case "JS": {
+      ctx.fillStyle = "#f7df1e";
+      ctx.fillRect(x - size / 2, y - size / 2, size, size);
+      ctx.fillStyle = "#000000";
+      ctx.font = `bold ${Math.round(size * 0.5)}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("JS", x, y + size * 0.05);
+      break;
+    }
+    case "HTML": {
+      ctx.strokeStyle = "#e34f26";
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(x - size * 0.25, y - size * 0.2);
+      ctx.lineTo(x - size * 0.4, y);
+      ctx.lineTo(x - size * 0.25, y + size * 0.2);
+      ctx.moveTo(x + size * 0.25, y - size * 0.2);
+      ctx.lineTo(x + size * 0.4, y);
+      ctx.lineTo(x + size * 0.25, y + size * 0.2);
+      ctx.moveTo(x + size * 0.1, y - size * 0.3);
+      ctx.lineTo(x - size * 0.1, y + size * 0.3);
+      ctx.stroke();
+      break;
+    }
+    case "TANSTACK QUERY": {
+      ctx.fillStyle = "#ff4154";
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.ellipse(x, y, size / 2, size / 5, (i * Math.PI) / 3, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(x, y, size * 0.15, 0, 2 * Math.PI);
+      ctx.fill();
+      break;
+    }
+    case "BOOTSTRAP": {
+      ctx.fillStyle = "#7952b3";
+      const r = size * 0.2;
+      ctx.beginPath();
+      ctx.roundRect(x - size / 2, y - size / 2, size, size, r);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `bold ${Math.round(size * 0.65)}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("B", x, y);
+      break;
+    }
+    case "HONO": {
+      ctx.fillStyle = "#e25822";
+      ctx.beginPath();
+      ctx.moveTo(x, y - size / 2);
+      ctx.bezierCurveTo(x + size / 2, y - size / 6, x + size / 3, y + size / 2, x, y + size / 2);
+      ctx.bezierCurveTo(x - size / 3, y + size / 2, x - size / 2, y - size / 6, x, y - size / 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(x, y + size * 0.1, size * 0.15, 0, 2 * Math.PI);
+      ctx.fill();
+      break;
+    }
+    case "CLEAN ARCHITECTURE": {
+      ctx.strokeStyle = "#00e5ff";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(x, y, size / 2, 0, 2 * Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x, y, size / 3, 0, 2 * Math.PI); ctx.stroke();
+      ctx.fillStyle = "rgba(0, 229, 255, 0.4)";
+      ctx.beginPath(); ctx.arc(x, y, size / 6, 0, 2 * Math.PI); ctx.fill();
+      break;
+    }
+    case "RAZORPAY": {
+      ctx.fillStyle = "#0b72e7";
+      ctx.beginPath();
+      ctx.moveTo(x - size / 6, y - size / 2);
+      ctx.lineTo(x + size / 2, y - size / 2);
+      ctx.lineTo(x + size / 6, y);
+      ctx.lineTo(x + size / 3, y);
+      ctx.lineTo(x - size / 2, y + size / 2);
+      ctx.lineTo(x - size / 6, y);
+      ctx.lineTo(x - size / 3, y);
+      ctx.closePath();
+      ctx.fill();
+      break;
+    }
+    case "DSA": {
+      ctx.strokeStyle = "#00c853";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(x, y - size * 0.25);
+      ctx.lineTo(x - size * 0.25, y + size * 0.25);
+      ctx.moveTo(x, y - size * 0.25);
+      ctx.lineTo(x + size * 0.25, y + size * 0.25);
+      ctx.stroke();
+      ctx.fillStyle = "#00c853";
+      ctx.beginPath(); ctx.arc(x, y - size * 0.25, size * 0.15, 0, 2 * Math.PI); ctx.fill();
+      ctx.beginPath(); ctx.arc(x - size * 0.25, y + size * 0.25, size * 0.12, 0, 2 * Math.PI); ctx.fill();
+      ctx.beginPath(); ctx.arc(x + size * 0.25, y + size * 0.25, size * 0.12, 0, 2 * Math.PI); ctx.fill();
       break;
     }
     default: {
       ctx.strokeStyle = "#00e5ff";
       ctx.lineWidth = 0.8;
       ctx.beginPath();
-      ctx.moveTo(x - 2, y - 3);
-      ctx.lineTo(x - 4, y);
-      ctx.lineTo(x - 2, y + 3);
-      ctx.moveTo(x + 2, y - 3);
-      ctx.lineTo(x + 4, y);
-      ctx.lineTo(x + 2, y + 3);
+      ctx.moveTo(x - size * 0.2, y - size * 0.3);
+      ctx.lineTo(x - size * 0.4, y);
+      ctx.lineTo(x - size * 0.2, y + size * 0.3);
+      ctx.moveTo(x + size * 0.2, y - size * 0.3);
+      ctx.lineTo(x + size * 0.4, y);
+      ctx.lineTo(x + size * 0.2, y + size * 0.3);
       ctx.stroke();
     }
   }
@@ -257,28 +361,26 @@ export default function Footer() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Initialize tags with random positions (adjusted for logos and screen size)
+    // Initialize tags with random positions (icons only)
     const isMobileDevice = window.innerWidth < 640;
-    const fontSz = isMobileDevice ? 8 : 9;
-    const paddingX = isMobileDevice ? 20 : 30;
-    const paddingY = isMobileDevice ? 8 : 10;
+    const iconSize = isMobileDevice ? 28 : 38;
+    const padding = isMobileDevice ? 16 : 20;
+    const size = iconSize + padding;
+    const radius = size / 2;
 
     let bodies: PhysicsBody[] = TECH_TAGS.map((tag, idx) => {
-      ctx.font = `bold ${fontSz}px monospace`;
-      const textWidth = ctx.measureText(tag.toUpperCase()).width;
-      const width = textWidth + paddingX;
-      const height = fontSz + paddingY;
-      const radius = width / 2; // circle approximation
+      const width = size;
+      const height = size;
 
       // Spread columns
-      const cols = isMobileDevice ? 3 : 5;
+      const cols = isMobileDevice ? 4 : 8;
       const col = idx % cols;
       const row = Math.floor(idx / cols);
 
       return {
         label: tag.toUpperCase(),
-        x: 20 + col * ((canvas.width - 40) / cols) + Math.random() * 10,
-        y: -30 - row * 35, // start above canvas to fall down
+        x: radius + col * ((canvas.width - size) / cols) + Math.random() * 10,
+        y: -30 - row * 45, // start above canvas to fall down
         vx: (Math.random() - 0.5) * 2,
         vy: Math.random() * 1.5 + 1,
         width,
@@ -475,11 +577,11 @@ export default function Footer() {
           }
         }
 
-        // Draw pill capsule
+        // Draw circular container
         ctx.save();
         ctx.translate(body.x, body.y);
 
-        // Capsule background
+        // Container background
         ctx.fillStyle = body.isGrabbed ? "rgba(0, 229, 255, 0.15)" : "rgba(10, 10, 10, 0.8)";
         ctx.strokeStyle = body.isGrabbed ? "#00e5ff" : "rgba(0, 229, 255, 0.2)";
         ctx.lineWidth = 1.2;
@@ -489,38 +591,18 @@ export default function Footer() {
           ctx.shadowColor = "#00e5ff";
         }
 
-        const r = body.height / 2;
-        const w = body.width - body.height;
-
         ctx.beginPath();
-        ctx.arc(-w / 2, 0, r, Math.PI / 2, (3 * Math.PI) / 2);
-        ctx.lineTo(w / 2, -r);
-        ctx.arc(w / 2, 0, r, (3 * Math.PI) / 2, Math.PI / 2);
+        ctx.arc(0, 0, body.radius, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
 
-        // Draw logo & text
-        ctx.shadowBlur = 0; // turn off glow for text
+        // Draw logo centered in the circle
+        ctx.shadowBlur = 0; // turn off glow for logo
         
         const isMobileCanvas = canvas.width < 640;
-        const currentFontSz = isMobileCanvas ? 8 : 9;
-        const currentLogoSz = isMobileCanvas ? 8 : 10;
-        const textOffset = isMobileCanvas ? 5 : 7;
-
-        ctx.font = `bold ${currentFontSz}px monospace`;
-        const textWidth = ctx.measureText(body.label).width;
-        
-        // Draw logo centered left of text
-        const logoX = -textWidth / 2 - 3;
-        const logoY = 0;
-        drawLogo(ctx, body.label, logoX, logoY, currentLogoSz);
-
-        // Draw text shifted right
-        ctx.fillStyle = body.isGrabbed ? "#ffffff" : "rgba(255, 255, 255, 0.8)";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(body.label, textOffset, 0.5);
+        const currentLogoSz = isMobileCanvas ? 28 : 38; // increased icon size
+        drawLogo(ctx, body.label, 0, 0, currentLogoSz);
 
         ctx.restore();
       }

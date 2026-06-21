@@ -8,7 +8,11 @@ const WORDS = [
   "مرحباً",       // Arabic
   "ഹലോ",         // Malayalam
   "你好",        // Chinese
-  "Hola"         // Spanish
+  "Hola",        // Spanish
+  "Bonjour",     // French
+  "こんにちは",   // Japanese
+  "Привет",      // Russian
+  "Hallo"        // German
 ];
 
 export default function Preloader() {
@@ -33,12 +37,12 @@ export default function Preloader() {
               setVisible(false);
               document.body.style.overflow = "";
             }, 600); // fade out duration
-          }, 350);
+          }, 220);
           return prev;
         }
         return prev + 1;
       });
-    }, 350); // cycle word every 350ms
+    }, 220); // cycle word every 220ms
 
     return () => {
       clearInterval(interval);

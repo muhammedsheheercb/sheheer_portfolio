@@ -1,15 +1,12 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Mail, Phone, MapPin, Send, CheckCircle, MessageCircle } from "lucide-react";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const captchaRef = useRef<any>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,15 +22,8 @@ export default function Contact() {
       setTimeout(() => {
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "" });
-        setCaptchaToken(null);
         setTimeout(() => setFormStatus("idle"), 4000);
       }, 1500);
-      return;
-    }
-
-    if (!captchaToken) {
-      setFormStatus("error");
-      setErrorMessage("Please solve the hCaptcha challenge before submitting.");
       return;
     }
 
@@ -53,8 +43,7 @@ export default function Contact() {
           email: formData.email,
           message: formData.message,
           from_name: "Portfolio Contact Form",
-          subject: `New Message from ${formData.name} via Portfolio`,
-          "h-captcha-response": captchaToken
+          subject: `New Message from ${formData.name} via Portfolio`
         })
       });
 
@@ -62,20 +51,14 @@ export default function Contact() {
       if (result.success) {
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "" });
-        setCaptchaToken(null);
-        captchaRef.current?.resetCaptcha();
         setTimeout(() => setFormStatus("idle"), 4000);
       } else {
         setFormStatus("error");
         setErrorMessage(result.message || "Failed to send message. Please try again.");
-        captchaRef.current?.resetCaptcha();
-        setCaptchaToken(null);
       }
     } catch (err) {
       setFormStatus("error");
       setErrorMessage("A network error occurred. Please try again later.");
-      captchaRef.current?.resetCaptcha();
-      setCaptchaToken(null);
     }
   };
 
@@ -228,23 +211,7 @@ export default function Contact() {
                   />
                 </div>
 
-                {/* hCaptcha widget */}
-                {process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY && (
-                  <div className="flex justify-center py-2 overflow-hidden max-w-full">
-                    <HCaptcha
-                      sitekey="50b270fa-ee9b-4ec6-8a9d-3c83485b9f7e"
-                      theme="dark"
-                      onVerify={(token) => setCaptchaToken(token)}
-                      onExpire={() => setCaptchaToken(null)}
-                      onError={() => {
-                        setCaptchaToken(null);
-                        setFormStatus("error");
-                        setErrorMessage("hCaptcha failed to load. Please try again.");
-                      }}
-                      ref={captchaRef}
-                    />
-                  </div>
-                )}
+
 
                 {/* Error message */}
                 {formStatus === "error" && (
