@@ -61,8 +61,8 @@ export default function Navbar() {
       {/* Navbar Container */}
       <div
         className={`w-full rounded-full glass-panel px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between transition-all duration-500 ${scrolled
-            ? "shadow-2xl shadow-cyan-500/5 border-cyan-500/10 bg-black/80"
-            : "shadow-xl shadow-black/10 border-white/5 bg-[#0a0a0a]/60"
+          ? "shadow-2xl shadow-cyan-500/5 border-cyan-500/10 bg-black/80"
+          : "shadow-xl shadow-black/10 border-white/5 bg-[#0a0a0a]/60"
           }`}
       >
         {/* Animated Coding Name Logo */}
@@ -72,10 +72,11 @@ export default function Navbar() {
           className="flex items-center gap-1.5 group select-none py-0.5"
         >
           <span
-            className="text-2.5xl sm:text-4xl tracking-wide text-white drop-shadow-[0_0_10px_rgba(0,229,255,0.4)] group-hover:text-cyan-300 transition-all duration-300"
-            style={{ fontFamily: "var(--font-mr-de-haviland), cursive" }}
+            // className="text-4xl sm:text-4xl tracking-wide text-white drop-shadow-[0_0_10px_rgba(0,229,255,0.4)] group-hover:text-cyan-300 transition-all duration-300"
+            className="font-display text-lg md:text-2xl font-black tracking-tighter uppercase leading-none text-white"
+          // style={{ fontFamily: "var(--font-mr-de-haviland), cursive" }}
           >
-            Mohammed Sheheer
+            Sheheer
           </span>
         </a>
 
@@ -150,8 +151,8 @@ export default function Navbar() {
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
                   className={`px-4 py-2.5 rounded-xl text-sm font-bold tracking-wider uppercase transition-all duration-200 ${isActive
-                      ? "bg-cyan-500/10 border-l-2 border-cyan-400 text-cyan-400 pl-6"
-                      : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+                    ? "bg-cyan-500/10 border-l-2 border-cyan-400 text-cyan-400 pl-6"
+                    : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
                     }`}
                 >
                   {item.label}

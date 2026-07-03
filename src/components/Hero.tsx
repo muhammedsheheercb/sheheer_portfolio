@@ -187,12 +187,12 @@ export default function Hero() {
                   <span
                     key={dIdx}
                     className={`h-[7px] w-[7px] rounded-[1px] transition-colors ${level === 3
-                        ? "bg-cyan-400 shadow-[0_0_4px_rgba(0,229,255,0.4)]"
-                        : level === 2
-                          ? "bg-cyan-600/70"
-                          : level === 1
-                            ? "bg-cyan-900/40"
-                            : "bg-white/[0.02]"
+                      ? "bg-cyan-400 shadow-[0_0_4px_rgba(0,229,255,0.4)]"
+                      : level === 2
+                        ? "bg-cyan-600/70"
+                        : level === 1
+                          ? "bg-cyan-900/40"
+                          : "bg-white/[0.02]"
                       }`}
                   />
                 ))}
