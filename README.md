@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sheheer’s World
 
-## Getting Started
+An interactive driving portfolio built in the existing Next.js 16 App Router project. The original seven projects, seven WebP previews, 26 skills, career and education entries, and contact links are preserved.
 
-First, run the development server:
+## Run
 
-```bash
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. For production, run `npm run build` followed by `npm run start`. The existing Google Fonts integration needs network access during the build.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The contact form uses `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` from `.env`. Missing configuration produces an error with direct-contact alternatives; submissions are never simulated. Set `NEXT_PUBLIC_SITE_URL` to the canonical production origin for social image metadata, robots, and sitemap generation. Without it, those routes use the incoming request origin.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Explore
 
-## Learn More
+Use W/A/S/D or arrow keys to drive, S to brake and reverse, Space to jump, Shift to boost, Enter to open a nearby destination, R to respawn, and M to open the destination map. Escape closes panels. The top navigation and world map move the vehicle directly to destinations. On phones, use the steering joystick and accelerator, reverse, jump, and boost buttons.
 
-To learn more about Next.js, take a look at the following resources:
+The reading view provides the same content as accessible, server-rendered HTML. WebGL failures automatically open it, and a no-JavaScript fallback makes the content available without the game. Project previews support previous/next navigation and original live links. The source portfolio has no photography, profile photo, or video assets; the design gallery uses the actual project previews.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/lib/portfolio.ts`: original portfolio content and world destinations.
+- `src/components/world/WorldExperience.tsx`: navigation, map, dialogs, loading, input, and touch interface.
+- `src/components/world/useDrivingControls.ts`: persistent keyboard input, touch input, and pause/blur cleanup.
+- `src/components/world/Scene.tsx`: dynamically loaded renderer, loading progress, and physics boundary.
+- `src/components/world/Vehicle.tsx`: fixed-step Rapier driving, ground detection, jumping, wheels, and camera.
+- `src/components/world/Environment.tsx`: original procedural environment, instanced forest, screenshot displays, colliders, ramp, and movable crates.
+- `src/components/world/PortfolioContent.tsx` and `SectionContent.tsx`: server-rendered reading content and shared section panels.
+- `src/components/Contact.tsx`: preserved Web3Forms contact integration.
 
-## Deploy on Vercel
+Rendering quality controls cap DPR and switch shadows. Touch devices default to low quality. Paused scenes use demand rendering, assets and the renderer load behind Suspense, and movement does not rely on React state updates. Reduced motion can follow the operating system preference or be enabled in settings.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Verify
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sh
+npm run lint
+npx tsc --noEmit
+npm run build
+npx playwright install chromium
+npm run start
+node scripts/world-check.mjs
+```
+
+Pass a URL argument or set `PORTFOLIO_TEST_URL` to select another server. `node scripts/content-check.mjs` compares the migrated data with the original Git revision. The browser check exercises real acceleration, reverse, steering, jumping, collisions, resets, all destinations, project/gallery navigation, reading mode, phone/landscape/tablet overflow, mobile pedals and joystick, robots, and sitemap. Web3Forms success and rejection responses are intercepted; the check sends no real messages. Screenshots are written to `/tmp/world-*.png`. Hardware frame rates and physical iOS/Android behavior need testing on those devices.

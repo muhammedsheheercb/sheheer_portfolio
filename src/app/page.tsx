@@ -1,43 +1,34 @@
-import Navbar from "@/components/Navbar";
-import InteractiveBg from "@/components/InteractiveBg";
-import CustomCursor from "@/components/CustomCursor";
-import Preloader from "@/components/Preloader";
-import Hero from "@/components/Hero";
-import Projects from "@/components/Projects";
-import Skills from "@/components/Skills";
-import Timeline from "@/components/Timeline";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-
+import WorldExperience from "@/components/world/WorldExperience";
+import PortfolioContent from "@/components/world/PortfolioContent";
+import { profile } from "@/lib/portfolio";
 export default function Home() {
   return (
-    <div className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-[#080808] text-zinc-100">
-      {/* Glowing Viewport Vignette Frame */}
-      <div className="viewport-vignette" />
-
-      {/* 1. Custom Interactive Cursor */}
-      <CustomCursor />
-
-      {/* Preloader Splash Screen */}
-      <Preloader />
-
-      {/* 2. Interactive Matrix Rain Background */}
-      <InteractiveBg />
-
-      {/* 3. Floating Glassmorphic Navigation */}
-      <Navbar />
-
-      {/* 4. Main Portfolio Sections */}
-      <main className="flex-1 w-full flex flex-col">
-        <Hero />
-        <Projects />
-        <Skills />
-        <Timeline />
-        <Contact />
-      </main>
-
-      {/* 5. Custom Physics Tag Sandbox Footer */}
-      <Footer />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: profile.name,
+            jobTitle: profile.title,
+            email: profile.email,
+            sameAs: [profile.github, profile.linkedin],
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Thrissur",
+              addressRegion: "Kerala",
+              addressCountry: "IN",
+            },
+          }),
+        }}
+      />
+      <WorldExperience>
+        <PortfolioContent />
+      </WorldExperience>
+      <noscript>
+        <style>{`.reading-shell{display:block!important}.world-stage,.launch-screen,.game-brand,.return-world{display:none!important}`}</style>
+      </noscript>
+    </>
   );
 }

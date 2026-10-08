@@ -1,11 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { Mail, Phone, MapPin, Send, CheckCircle, MessageCircle } from "lucide-react";
+import { useState, useId } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  CheckCircle,
+  MessageCircle,
+} from "lucide-react";
+import { profile } from "@/lib/portfolio";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const formId = useId();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [formStatus, setFormStatus] = useState<
+    "idle" | "sending" | "success" | "error"
+  >("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -15,15 +30,10 @@ export default function Contact() {
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
     if (!accessKey) {
-      setFormStatus("sending");
-      setErrorMessage("");
-      // Fallback: Simulate submission if key is not configured in local env
-      console.warn("Web3Forms access key not found in environment variables. Running in simulation mode.");
-      setTimeout(() => {
-        setFormStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setFormStatus("idle"), 4000);
-      }, 1500);
+      setFormStatus("error");
+      setErrorMessage(
+        "The contact form is unavailable. Please reach out by email or WhatsApp.",
+      );
       return;
     }
 
@@ -35,7 +45,7 @@ export default function Contact() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json"
+          Accept: "application/json",
         },
         body: JSON.stringify({
           access_key: accessKey,
@@ -43,37 +53,39 @@ export default function Contact() {
           email: formData.email,
           message: formData.message,
           from_name: "Portfolio Contact Form",
-          subject: `New Message from ${formData.name} via Portfolio`
-        })
+          subject: `New Message from ${formData.name} via Portfolio`,
+        }),
       });
 
       const result = await response.json();
-      if (result.success) {
+      if (response.ok && result.success) {
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setFormStatus("idle"), 4000);
       } else {
         setFormStatus("error");
-        setErrorMessage(result.message || "Failed to send message. Please try again.");
+        setErrorMessage(
+          result.message || "Failed to send message. Please try again.",
+        );
       }
-    } catch (err) {
+    } catch {
       setFormStatus("error");
       setErrorMessage("A network error occurred. Please try again later.");
     }
   };
 
   return (
-    <section id="contact" className="py-20 px-6 max-w-6xl mx-auto z-10 relative">
+    <section className="contact-section py-20 px-6 max-w-6xl mx-auto z-10 relative">
       {/* Section Title */}
       <div className="flex flex-col gap-3 mb-16 text-center md:text-left">
         <span className="text-[10px] font-mono text-zinc-500 tracking-[0.2em] uppercase self-center md:self-start">
-          // 04 . GET IN TOUCH
+          GET IN TOUCH
         </span>
         <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-tight">
           Get In Touch
         </h2>
         <p className="text-zinc-400 max-w-lg text-sm">
-          Have an exciting project or full-time opportunity? Fill out the form or reach out directly.
+          Have an exciting project or full-time opportunity? Fill out the form
+          or reach out directly.
         </p>
       </div>
 
@@ -91,12 +103,14 @@ export default function Contact() {
                 <Mail size={16} />
               </span>
               <div>
-                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">Email</p>
+                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">
+                  Email
+                </p>
                 <a
-                  href="mailto:muhammedsheheercb@gmail.com"
+                  href={`mailto:${profile.email}`}
                   className="text-zinc-300 hover:text-cyan-400 text-xs font-bold transition-colors break-all font-mono"
                 >
-                  muhammedsheheercb@gmail.com
+                  {profile.email}
                 </a>
               </div>
             </div>
@@ -107,12 +121,14 @@ export default function Contact() {
                 <Phone size={16} />
               </span>
               <div>
-                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">Phone</p>
+                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">
+                  Phone
+                </p>
                 <a
-                  href="tel:+918086860867"
+                  href={`tel:${profile.phone.replace(/\s/g, "")}`}
                   className="text-zinc-300 hover:text-cyan-400 text-xs font-bold transition-colors font-mono"
                 >
-                  +91 8086860867
+                  {profile.phone}
                 </a>
               </div>
             </div>
@@ -123,14 +139,16 @@ export default function Contact() {
                 <MessageCircle size={16} />
               </span>
               <div>
-                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">WhatsApp</p>
+                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">
+                  WhatsApp
+                </p>
                 <a
-                  href="https://wa.me/918086860867"
+                  href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-300 hover:text-cyan-400 text-xs font-bold transition-colors font-mono"
                 >
-                  +91 8086860867
+                  {profile.phone}
                 </a>
               </div>
             </div>
@@ -141,9 +159,11 @@ export default function Contact() {
                 <MapPin size={16} />
               </span>
               <div>
-                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">Location</p>
+                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">
+                  Location
+                </p>
                 <p className="text-zinc-300 text-xs font-bold uppercase tracking-wider">
-                  Thrissur, Kerala, India
+                  {profile.location}
                 </p>
               </div>
             </div>
@@ -155,25 +175,42 @@ export default function Contact() {
           <div className="rounded-2xl glass-panel p-6 border border-white/5 relative overflow-hidden">
             {formStatus === "success" ? (
               <div className="py-12 flex flex-col items-center justify-center text-center animate-in fade-in duration-300">
-                <CheckCircle size={48} className="text-cyan-400 mb-4 animate-bounce" />
-                <h4 className="font-display text-lg font-bold text-white mb-2 uppercase tracking-wide">Message Sent!</h4>
+                <CheckCircle
+                  size={48}
+                  className="text-cyan-400 mb-4 animate-bounce"
+                />
+                <h4 className="font-display text-lg font-bold text-white mb-2 uppercase tracking-wide">
+                  Message Sent!
+                </h4>
                 <p className="text-zinc-400 text-xs max-w-xs leading-relaxed">
-                  Thank you for reaching out. I will get back to you as soon as possible.
+                  Thank you for reaching out. I will get back to you as soon as
+                  possible.
                 </p>
+                <button
+                  className="primary-button"
+                  onClick={() => setFormStatus("idle")}
+                >
+                  Send another message
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Name */}
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="name" className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">
+                  <label
+                    htmlFor={`${formId}-name`}
+                    className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider"
+                  >
                     Full Name
                   </label>
                   <input
                     type="text"
-                    id="name"
+                    id={`${formId}-name`}
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="px-4 py-3 rounded-xl bg-zinc-950/40 border border-white/5 focus:border-cyan-400 focus:bg-zinc-950/80 text-zinc-200 text-xs outline-none transition-all duration-300"
                     placeholder="Enter your name"
                   />
@@ -181,15 +218,20 @@ export default function Contact() {
 
                 {/* Email */}
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="email" className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">
+                  <label
+                    htmlFor={`${formId}-email`}
+                    className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider"
+                  >
                     Email Address
                   </label>
                   <input
                     type="email"
-                    id="email"
+                    id={`${formId}-email`}
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="px-4 py-3 rounded-xl bg-zinc-950/40 border border-white/5 focus:border-cyan-400 focus:bg-zinc-950/80 text-zinc-200 text-xs outline-none transition-all duration-300"
                     placeholder="Enter your email"
                   />
@@ -197,26 +239,33 @@ export default function Contact() {
 
                 {/* Message */}
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="message" className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">
+                  <label
+                    htmlFor={`${formId}-message`}
+                    className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider"
+                  >
                     Message
                   </label>
                   <textarea
-                    id="message"
+                    id={`${formId}-message`}
                     required
                     rows={4}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                     className="px-4 py-3 rounded-xl bg-zinc-950/40 border border-white/5 focus:border-cyan-400 focus:bg-zinc-950/80 text-zinc-200 text-xs outline-none transition-all duration-300 resize-none"
                     placeholder="Write your message details..."
                   />
                 </div>
 
-
-
                 {/* Error message */}
                 {formStatus === "error" && (
-                  <p className="text-red-400 text-xs font-semibold tracking-wide text-center">
-                    {errorMessage || "Failed to send message. Please try again."}
+                  <p
+                    role="alert"
+                    className="text-red-400 text-xs font-semibold tracking-wide text-center"
+                  >
+                    {errorMessage ||
+                      "Failed to send message. Please try again."}
                   </p>
                 )}
 
