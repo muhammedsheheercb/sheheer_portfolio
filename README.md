@@ -1,5 +1,13 @@
 # Sheheer’s World
 
+## Deploy to Vercel
+
+The current project uses Vite, as configured in `package.json` and `vite.config.js`. The `vercel.json` file selects the Vite framework, runs `npm run build`, and serves `dist`.
+
+In Vercel's project settings, set **Root Directory** to the repository root (the directory containing `package.json` and `vercel.json`), and **Framework Preset** to **Vite**. Do not select `sources` as the Root Directory; Vite already uses it as its source root. Deploy the commit containing `vercel.json` to apply the configuration.
+
+The Next.js instructions below describe an earlier implementation and do not apply to the current Vite project. For this version, run `npm run dev` for development or `npm run build` and `npm run preview` to preview the production build.
+
 An interactive driving portfolio built in the existing Next.js 16 App Router project. The original seven projects, seven WebP previews, 26 skills, career and education entries, and contact links are preserved.
 
 ## Run
