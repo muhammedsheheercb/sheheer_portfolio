@@ -38,7 +38,6 @@
 
     <link rel="preload" href="/respawns/respawnsReferences-compressed.glb" as="fetch" crossorigin>
     <link rel="preload" href="/behindTheScene/stars.ktx" as="fetch" crossorigin>
-    <link rel="preload" href="/intro/sound.ktx" as="fetch" crossorigin>
     <link rel="preload" href="/palette.ktx" as="fetch" crossorigin>
     
     <!-- Analytics -->
@@ -62,6 +61,26 @@
     <div class="game">
 
         <canvas class="js-canvas"></canvas>
+        <section class="js-entrance entrance" aria-label="Portfolio entrance" hidden>
+            <header class="entrance-top">
+                <div class="entrance-brand"><span class="entrance-mark">MS</span> SHEHEER / WORLD</div>
+                <div class="entrance-status">GATE 01 · ONLINE</div>
+            </header>
+            <div class="entrance-copy">
+                <p class="entrance-eyebrow">An interactive expedition</p>
+                <h1>Mohammed<br><span>Sheheer CB.</span></h1>
+                <p class="entrance-role">Frontend Engineer &amp; Full Stack Architect</p>
+                <p class="entrance-description">Beyond the screen, a world of ideas.<br>Take the wheel. Find your own way.</p>
+                <div class="entrance-actions">
+                    <button type="button" class="js-entrance-start entrance-start" disabled><span>Preparing world</span><span aria-hidden="true">↗</span></button>
+                    <p class="js-entrance-progress entrance-progress" role="status" aria-live="polite">Initializing gateway</p>
+                </div>
+            </div>
+            <footer class="entrance-footer">
+                <span>DRIVE · DISCOVER · CONNECT</span>
+                <button type="button" class="js-entrance-sound entrance-sound" aria-pressed="false">Sound off</button>
+            </footer>
+        </section>
 
         <!-- Touch buttons -->
         <div class="js-touch-buttons touch-buttons">
@@ -652,6 +671,24 @@
 
         <!-- Modals -->
         <div class="js-modals modals">
+
+            <div class="js-modal modal bowling-music" data-name="bowling-music" role="dialog" aria-modal="true" aria-labelledby="bowling-music-heading">
+                <div class="container"><div class="content">
+                    <button class="js-close close" aria-label="Close music player"><img class="icon is-default" src="ui/close.svg" alt=""></button>
+                    <h2 id="bowling-music-heading">Bowling music</h2>
+                    <img class="js-music-artwork music-artwork" hidden alt="">
+                    <h3 class="js-music-title"></h3>
+                    <p class="js-music-meta"></p>
+                    <p class="js-music-status" role="status" aria-live="polite"></p>
+                    <div class="music-controls">
+                        <button type="button" class="js-main-focus" data-music-action="previous">Previous</button>
+                        <button type="button" data-music-action="togglePlayPause">Play</button>
+                        <button type="button" data-music-action="next">Next</button>
+                    </div>
+                    <label class="music-volume">Volume <input class="js-music-volume" type="range" min="0" max="1" step="0.01" value="0.2"></label>
+                    <div class="js-music-songs music-songs" role="group" aria-label="Song playlist"></div>
+                </div></div>
+            </div>
 
             <!-- Circuit end -->
             <div class="js-modal modal circuit-end" data-name="circuit-end">

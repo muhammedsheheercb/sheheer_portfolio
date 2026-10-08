@@ -59,6 +59,8 @@ export class Grid
             new THREE.PlaneGeometry(100, 100),
             uvGridMaterial
         )
+        this.mesh.visible = false
+        this.mesh.userData.preventPreRender = true
         this.mesh.position.y = 0
         this.mesh.rotation.x = - Math.PI * 0.5
 

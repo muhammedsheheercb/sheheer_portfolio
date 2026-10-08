@@ -333,8 +333,8 @@ export class ProjectsArea extends Area
     {
         this.images = {}
         this.images.initiated = false
-        this.images.width = 1920 * 0.5
-        this.images.height = 1080 * 0.5
+        this.images.width = this.game.quality.level === 0 ? 1920 : 1280
+        this.images.height = this.images.width * 9 / 16
         this.images.index = 0
         this.images.direction = ProjectsArea.DIRECTION_NEXT
         this.images.resources = new Map()
@@ -415,13 +415,11 @@ export class ProjectsArea extends Area
         // Load ended
         this.images.loadEnded = (key) =>
         {
-            // If first image => init
-            if(!this.images.initiated)
-                this.images.init(key)
-
-            // Current image => Reveal
+            // A prefetched image must never replace the selected project's preview.
             if(this.navigation.current.images[this.images.index] === key)
             {
+                if(!this.images.initiated)
+                    this.images.init(key)
                 const resource = this.images.getResourceAndLoad(key)
                 this.images.textureNew.copy(resource.texture)
                 this.images.textureNew.needsUpdate = true
@@ -479,29 +477,59 @@ export class ProjectsArea extends Area
                 resource = {}
                 resource.loaded = false
 
-                const loader = this.game.resourcesLoader.getLoader('textureKtx')
-
-                loader.load(
+                const loader = this.game.resourcesLoader.getLoader('texture')
+                const load = () => loader.load(
                     path,
                     (loadedTexture) =>
                     {
-                        resource.texture = loadedTexture
-                        resource.colorSpace = THREE.SRGBColorSpace
-                        resource.flipY = false
-                        resource.magFilter = THREE.LinearFilter
-                        resource.minFilter = THREE.LinearFilter
-                        resource.generateMipmaps = false
+                        // The GLTF board UVs have v=0 at the top. Fit the complete
+                        // screenshot into its 16:9 surface without cropping or stretching.
+                        const canvas = document.createElement('canvas')
+                        canvas.width = this.images.width
+                        canvas.height = this.images.height
+                        const context = canvas.getContext('2d')
+                        const image = loadedTexture.image
+                        const scale = Math.min(canvas.width / image.width, canvas.height / image.height)
+                        const width = image.width * scale, height = image.height * scale
+                        context.fillStyle = '#333333'
+                        context.fillRect(0, 0, canvas.width, canvas.height)
+                        context.drawImage(image, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height)
+                        loadedTexture.dispose()
 
+                        resource.texture = new THREE.CanvasTexture(canvas)
+                        resource.texture.colorSpace = THREE.SRGBColorSpace
+                        resource.texture.flipY = false
+                        resource.texture.magFilter = THREE.LinearFilter
+                        resource.texture.minFilter = THREE.LinearMipmapLinearFilter
+                        resource.texture.generateMipmaps = true
+                        resource.texture.anisotropy = 4
                         resource.loaded = true
-                        
+                        resource.loading = false
+                        resource.error = false
                         this.images.loadEnded(key)
+                    },
+                    undefined,
+                    () =>
+                    {
+                        resource.loading = false
+                        resource.error = true
+                        console.warn(`Projects > Could not load preview: ${path}`)
                     }
                 )
+                resource.load = () =>
+                {
+                    resource.loading = true
+                    load()
+                }
+                resource.load()
 
                 // Save
                 this.images.resources.set(key, resource)
             }
-
+            else if(resource.error && !resource.loading)
+            {
+                resource.load()
+            }
 
             return resource
         }
@@ -517,6 +545,8 @@ export class ProjectsArea extends Area
 
             if(resource.loaded)
             {
+                if(!this.images.initiated)
+                    this.images.init(key)
                 this.images.loadSibling()
                 this.images.loadProgress.value = 1
             }
@@ -1297,6 +1327,9 @@ export class ProjectsArea extends Area
     {
         if(this.state === ProjectsArea.STATE_OPEN || this.state === ProjectsArea.STATE_OPENING)
             return
+
+        // Restore the preview when entering, including images loaded during the intro.
+        this.images.mesh.visible = this.images.initiated
 
         // State
         this.state = ProjectsArea.STATE_OPENING

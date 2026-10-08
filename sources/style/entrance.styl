@@ -1,0 +1,271 @@
+.entrance
+    position fixed
+    inset 0
+    z-index 6
+    color #eef9fc
+    pointer-events none
+    font-family "Nunito", sans-serif
+    background linear-gradient(90deg, rgba(3, 8, 19, 0.92) 0%, rgba(3, 8, 19, 0.68) 25%, transparent 62%), linear-gradient(0deg, rgba(3, 8, 19, 0.8), transparent 22%)
+    transition opacity 0.45s ease
+
+    &[hidden]
+        display none
+
+    &.is-leaving
+        opacity 0
+
+    .entrance-top
+        position absolute
+        top 34px
+        left 5vw
+        right 5vw
+        display flex
+        align-items center
+        justify-content space-between
+
+    .entrance-brand
+        font-size 12px
+        font-weight 800
+        letter-spacing 0.16em
+        display flex
+        align-items center
+        gap 12px
+
+    .entrance-mark
+        width 32px
+        height 32px
+        display grid
+        place-items center
+        border 1px solid rgba(151, 223, 235, 0.5)
+        border-radius 8px
+        color #9eeff5
+        font-size 14px
+        letter-spacing -0.05em
+
+    .entrance-status
+        font-family monospace
+        font-size 10px
+        letter-spacing 0.12em
+        color #95b5ca
+        display flex
+        align-items center
+        gap 10px
+
+        &::before
+            content ''
+            width 5px
+            height 5px
+            background #76f5ca
+            border-radius 50%
+            box-shadow 0 0 12px #76f5ca
+
+    .entrance-copy
+        position absolute
+        left 7vw
+        top 50%
+        transform translateY(-50%)
+        width 37vw
+        max-width 520px
+
+    .entrance-eyebrow
+        color #82d4e3
+        font-family monospace
+        font-size 11px
+        letter-spacing 0.2em
+        text-transform uppercase
+        margin-bottom 22px
+        display flex
+        align-items center
+        gap 12px
+
+        &::before
+            content ''
+            width 26px
+            height 1px
+            background #82d4e3
+
+    h1
+        font-size clamp(42px, 4.8vw, 78px)
+        font-weight 800
+        line-height 1.02
+        letter-spacing -0.065em
+        margin 0 0 20px
+
+        span
+            display block
+            color #96e9ee
+
+    .entrance-role
+        font-size 14px
+        line-height 1.6
+        color #d1dfeb
+        margin-bottom 20px
+
+    .entrance-description
+        font-size 14px
+        line-height 1.8
+        color #8fa6bd
+        max-width 315px
+        margin-bottom 32px
+
+    .entrance-start
+        pointer-events auto
+        display flex
+        align-items center
+        justify-content space-between
+        gap 28px
+        min-height 56px
+        padding 0 23px
+        border-radius 6px
+        border 1px solid #a1f0ee
+        background #a1f0ee
+        color #071b29
+        font-size 14px
+        font-weight 800
+        cursor pointer
+        box-shadow 0 0 28px rgba(70, 226, 230, 0.15)
+        transition background 0.2s, transform 0.2s, box-shadow 0.2s
+
+        &:hover:not(:disabled)
+            background #c7fffa
+            transform translateY(-2px)
+            box-shadow 0 0 35px rgba(70, 226, 230, 0.3)
+
+        &:focus-visible
+            outline 2px solid #fff
+            outline-offset 5px
+
+        &:disabled
+            background rgba(132, 225, 234, 0.12)
+            color #a3c3d2
+            border-color rgba(132, 225, 234, 0.3)
+            cursor wait
+
+    .entrance-progress
+        margin-top 14px
+        font-family monospace
+        font-size 10px
+        letter-spacing 0.08em
+        color #7692a8
+
+    .entrance-footer
+        position absolute
+        bottom 28px
+        left 5vw
+        right 5vw
+        display flex
+        justify-content space-between
+        align-items center
+        color #8099b2
+        font-family monospace
+        font-size 10px
+        letter-spacing 0.08em
+
+    .entrance-sound
+        pointer-events auto
+        min-height 44px
+        padding 10px 15px
+        border 1px solid rgba(151, 223, 235, 0.3)
+        border-radius 5px
+        color #c5dbe5
+        font-size 11px
+
+        &:focus-visible
+            outline 2px solid #a1f0ee
+            outline-offset 3px
+
+    @media (max-width: 700px) and (orientation: portrait)
+        background linear-gradient(180deg, rgba(3, 8, 19, 0.75), transparent 47%, rgba(3, 8, 19, 0.95) 100%)
+
+        .entrance-top
+            top unquote("max(20px, env(safe-area-inset-top))")
+            left 24px
+            right 24px
+
+        .entrance-status
+            font-size 8px
+
+        .entrance-copy
+            top 100px
+            left 24px
+            width calc(100% - 48px)
+            max-width none
+            transform none
+            text-align center
+
+        .entrance-eyebrow
+            justify-content center
+            font-size 9px
+            margin-bottom 14px
+
+        h1
+            font-size clamp(35px, 9vw, 50px)
+            margin-bottom 12px
+
+            span
+                display inline
+
+        .entrance-role
+            font-size 11px
+            margin-bottom 0
+
+        .entrance-description
+            display none
+
+        .entrance-actions
+            position fixed
+            bottom unquote("max(96px, calc(env(safe-area-inset-bottom) + 82px))")
+            left 50%
+            transform translateX(-50%)
+            width 230px
+
+        .entrance-start
+            width 100%
+
+        .entrance-footer
+            bottom unquote("max(20px, env(safe-area-inset-bottom))")
+            left 24px
+            right 24px
+            font-size 8px
+
+    @media (max-height: 520px) and (orientation: landscape)
+        .entrance-top
+            top 14px
+
+        .entrance-copy
+            left 5vw
+            top 48%
+            width 42vw
+
+        .entrance-eyebrow
+            margin-bottom 10px
+            font-size 8px
+
+        h1
+            font-size 34px
+            margin-bottom 10px
+
+        .entrance-role
+            font-size 10px
+            margin-bottom 14px
+
+        .entrance-description
+            display none
+
+        .entrance-start
+            min-height 44px
+            font-size 12px
+
+        .entrance-progress
+            margin-top 8px
+            font-size 8px
+
+        .entrance-footer
+            bottom 10px
+            font-size 8px
+
+    @media (prefers-reduced-motion: reduce)
+        transition none
+
+        .entrance-start
+            transition none

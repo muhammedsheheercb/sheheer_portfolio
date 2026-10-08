@@ -45,7 +45,10 @@ export class Reveal
 
     updateStep(step)
     {
-        const speedMultiplier = location.hash.match(/skip/i) ? 4 : 1
+        if(step <= this.step) return
+        this.step = step
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        const speedMultiplier = reducedMotion ? 10 : location.hash.match(/skip/i) ? 4 : 1
 
         // Step 0
         if(step === 0)
@@ -54,35 +57,9 @@ export class Reveal
             this.game.world.intro.circle.hide(() =>
             {
                 // Grid
-                this.game.world.grid.show()
+                // The entrance replaces the grid while retaining its lifecycle.
 
-                // Reveal
-                this.distance.value = 0
-
-                gsap.to(
-                    this.distance,
-                    {
-                        value: 3.5,
-                        ease: 'back.out(1.7)',
-                        duration: 2 / speedMultiplier,
-                        overwrite: true,
-                    }
-                )
-
-                // View
-                this.game.view.zoom.smoothedRatio = 0.6
-                this.game.view.zoom.baseRatio = 0.6
-
-                gsap.to(
-                    this.game.view.zoom,
-                    {
-                        baseRatio: 0.3,
-                        // smoothedRatio: 0.4,
-                        ease: 'power1.inOut',
-                        duration: 1.25 / speedMultiplier,
-                        overwrite: true,
-                    }
-                )
+                // World remains concealed until the dedicated entrance is ready.
 
                 // Intro loader => Show label and sound button
                 this.game.world.intro.setText()
@@ -106,6 +83,7 @@ export class Reveal
                     // Next function
                     const next = () =>
                     {
+                        if(this.step !== 0) return
                         this.updateStep(1)
                         this.game.inputs.events.off('introStart', inputCallback)
                         this.game.rayCursor.removeIntersect(intersect)
@@ -142,6 +120,7 @@ export class Reveal
 
             // { name: 'forward',               categories: [ 'wandering', 'racing', 'cinematic' ], keys: [ 'Keyboard.ArrowUp', 'Keyboard.KeyW', 'Gamepad.up', 'Gamepad.r2' ] },
             // { name: 'right',                 categories: [ 'wandering', 'racing', 'cinematic' ], keys: [ 'Keyboard.ArrowRight', 'Keyboard.KeyD', 'Gamepad.right' ] },
+                    this.game.world.intro.bindStart(next)
                     this.game.inputs.events.on('introStart', inputCallback)
                 }
             })
@@ -152,13 +131,15 @@ export class Reveal
             this.game.audio.init()
             this.sound.play()
 
+            this.distance.value = 0
+
             // Reveal
             gsap.to(
                 this.distance,
                 {
                     value: 30,
                     ease: 'back.in(1.3)',
-                    duration: 2 / speedMultiplier,
+                    duration: 1.1 / speedMultiplier,
                     overwrite: true,
                     onComplete: () =>
                     {
@@ -185,7 +166,7 @@ export class Reveal
                     baseRatio: 0,
                     // smoothedRatio: 0,
                     ease: 'back.in(1.5)',
-                    duration: 1.75 / speedMultiplier,
+                    duration: 1.2 / speedMultiplier,
                     overwrite: true,
                     onComplete: () =>
                     {
@@ -202,7 +183,7 @@ export class Reveal
                     {
                         seeThroughMultiplier: 1,
                         ease: 'power1.inOut',
-                        duration: 2 / speedMultiplier,
+                        duration: 1.1 / speedMultiplier,
                         overwrite: true
                     }
                 )
@@ -226,7 +207,6 @@ export class Reveal
             this.game.ticker.events.off('tick', this.update)
         }
 
-        this.step = step
     }
 
     update()

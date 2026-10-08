@@ -35,8 +35,15 @@ export class Achievements
             }
         }
 
+        this.restoreCompletedMilestones()
         this.globalProgress.update()
         this.rewards.update()
+    }
+
+    restoreCompletedMilestones()
+    {
+        for(const [name, , , total, , completed] of achievementsData)
+            if(completed) this.groups.get(name).setProgress(total, true)
     }
 
     setStorage()
@@ -585,6 +592,7 @@ export class Achievements
             group.reset()
         })
 
+        this.restoreCompletedMilestones()
         this.globalProgress.reset()
         this.storage.save()
         this.globalProgress.update()

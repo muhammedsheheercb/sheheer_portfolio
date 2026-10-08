@@ -4,6 +4,8 @@ import { Game } from './Game.js'
 import { remap, remapClamp, clamp } from './utilities/maths.js'
 import gsap from 'gsap'
 import { Events } from './Events.js'
+import { bowlingSongs } from './bowlingSongs.js'
+import { BowlingPlaylist } from './BowlingPlaylist.js'
 
 export class Audio
 {
@@ -146,278 +148,60 @@ export class Audio
 
     setPlaylist()
     {
-        this.playlist = {}
-        this.playlist.songs = [
-            {
-                path: 'sounds/musics/Malare.mp3',
-                name: 'Malare',
-                title: 'Malare',
-                artist: 'Vijay Yesudas',
-                album: 'Premam',
-                artwork: 'jukebox/cover_malare.jpg'
-            },
-            {
-                path: 'sounds/musics/Ethu_Kari_Raavilum.mp3',
-                name: 'Ethu Kari Raavilum',
-                title: 'Ethu Kari Raavilum',
-                artist: 'Haricharan',
-                album: 'Bangalore Days',
-                artwork: 'jukebox/cover_ethu_kari.jpg'
-            },
-            {
-                path: 'sounds/musics/Mukkathe_Penne.mp3',
-                name: 'Mukkathe Penne',
-                title: 'Mukkathe Penne',
-                artist: 'Mohammed Maqbool Mansoor',
-                album: 'Ennu Ninte Moideen',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            },
-            {
-                path: 'sounds/musics/Nenjodu_Cherthu.mp3',
-                name: 'Nenjodu Cherthu',
-                title: 'Nenjodu Cherthu',
-                artist: 'Job Kurian & Alphonse Puthren',
-                album: 'Yuvvh',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            },
-            {
-                path: 'sounds/musics/Olanjali_Kuruvi.mp3',
-                name: 'Olanjali Kuruvi',
-                title: 'Olanjali Kuruvi',
-                artist: 'P. Jayachandran & Vani Jairam',
-                album: '1983',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            },
-            {
-                path: 'sounds/musics/Anuraaga_Vilochananayi.mp3',
-                name: 'Anuraaga Vilochananayi',
-                title: 'Anuraaga Vilochananayi',
-                artist: 'M.G. Sreekumar & Shreya Ghoshal',
-                album: 'Neelathamara',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            },
-            {
-                path: 'sounds/musics/Kannum_Kannum_Nenjil.mp3',
-                name: 'Kannum Kannum Nenjil',
-                title: 'Kannum Kannum Nenjil',
-                artist: 'Haricharan',
-                album: 'Venalice',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            },
-            {
-                path: 'sounds/musics/Kuttanadan_Punchaneele.mp3',
-                name: 'Kuttanadan Punchayile',
-                title: 'Kuttanadan Punchayile',
-                artist: 'Vidya Vox & Shankar Tucker',
-                album: 'Folk Fusion',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            },
-            {
-                path: 'sounds/musics/Aaro_Viral_Meetti.mp3',
-                name: 'Aaro Viral Meetti',
-                title: 'Aaro Viral Meetti',
-                artist: 'K.J. Yesudas',
-                album: 'Pranayavarnangal',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            },
-            {
-                path: 'sounds/musics/Azhalinte_Azhangalil.mp3',
-                name: 'Azhalinte Aazhangalil',
-                title: 'Azhalinte Aazhangalil',
-                artist: 'Nikhil Mathew',
-                album: 'Ayalum Njanum Thanaal',
-                artwork: 'jukebox/cover_malayalam_hits.jpg'
-            }
-        ]
-        this.playlist.index = (Math.floor(Date.now() / 1000 / 60 / 3) % this.playlist.songs.length) // Different music every X minutes
-        this.playlist.current = null
-        this.playlist.switching = false
-        this.playlist.volume = 0.2
-
-        for(const song of this.playlist.songs)
-        {
-            song.loaded = false
-            song.sound = new Howl({
-                src: [ song.path ],
-                pool: 0,
-                autoplay: false,
-                loop: false,
-                preload: false,
-                volume: this.playlist.volume,
-                onload: () =>
-                {
-                    song.loaded = true
-                },
-                onloaderror: (id, err) =>
-                {
-                    console.warn(`Audio > Playlist > Load error for ${song.title}`, err)
-                },
-                onend: () =>
-                {
-                    this.playlist.next()
-                }
-            })
-        }
-
-        this.playlist.setVolume = (volume) =>
-        {
-            this.playlist.volume = Math.max(0, Math.min(1, volume))
-            for(const song of this.playlist.songs)
-            {
-                song.sound.volume(this.playlist.volume)
-            }
-        }
-
-        this.playlist.showNotification = () =>
+        this.playlist = new BowlingPlaylist(Howl, bowlingSongs, () => this.updateMusicPlayer(), () =>
         {
             const current = this.playlist.current
-            if(!current) return
-
-            const artworkHtml = current.artwork 
-                ? `<img src="${current.artwork}" class="song-artwork" alt="${current.title}" />` 
-                : ''
-            
-            const html = /* html */`
-                <div class="top">
-                    <div class="song-meta">
-                        ${artworkHtml}
-                        <div class="title">
-                            Now playing<br />
-                            <span class="song-name">${current.title}</span>
-                            <span class="song-artist">${current.artist} • ${current.album}</span>
-                        </div>
-                    </div>
-                    <div class="music-note-icon"></div>
-                </div>
-            `
-
-            this.game.notifications.show(
-                html,
-                'song',
-                5
-            )
-        }
-
-        this.playlist.play = () =>
-        {
-            if(!this.playlist.current)
-            {
-                this.playlist.current = this.playlist.songs[this.playlist.index]
-            }
-
-            if(this.playlist.current)
-            {
-                if(!this.playlist.current.loaded)
-                {
-                    this.playlist.current.sound.load()
-                }
-                if(!this.playlist.current.sound.playing())
-                {
-                    this.playlist.current.sound.play()
-                }
-                this.playlist.showNotification()
-            }
-        }
-
-        this.playlist.pause = () =>
-        {
-            if(this.playlist.current && this.playlist.current.sound.playing())
-            {
-                this.playlist.current.sound.pause()
-            }
-        }
-
-        this.playlist.togglePlayPause = () =>
-        {
-            if(this.playlist.current && this.playlist.current.sound.playing())
-            {
-                this.playlist.pause()
-            }
-            else
-            {
-                this.playlist.play()
-            }
-        }
-
-        this.playlist.next = () =>
-        {
-            if(this.playlist.switching)
-                return
-
-            this.playlist.switching = true
-
-            // Disc change sound
-            if(this.game.audio.groups.get('discChange'))
-                this.game.audio.groups.get('discChange').play()
-
-            // Old one
-            if(this.playlist.current)
-            {
-                this.playlist.current.sound.stop()
-            }
-
-            gsap.delayedCall(2, () =>
-            {
-                this.playlist.index++
-
-                if(this.playlist.index >= this.playlist.songs.length)
-                    this.playlist.index = 0
-
-                // New one
-                this.playlist.current = this.playlist.songs[this.playlist.index]
-
-                if(!this.playlist.current.loaded)
-                {
-                    this.playlist.current.sound.load()
-                }
-
-                this.playlist.current.sound.play()
-                this.playlist.showNotification()
-
-                this.playlist.switching = false
-            })
-        }
-
-        this.playlist.previous = () =>
-        {
-            if(this.playlist.switching)
-                return
-
-            this.playlist.switching = true
-
-            if(this.game.audio.groups.get('discChange'))
-                this.game.audio.groups.get('discChange').play()
-
-            if(this.playlist.current)
-            {
-                this.playlist.current.sound.stop()
-            }
-
-            gsap.delayedCall(2, () =>
-            {
-                this.playlist.index--
-
-                if(this.playlist.index < 0)
-                    this.playlist.index = this.playlist.songs.length - 1
-
-                this.playlist.current = this.playlist.songs[this.playlist.index]
-
-                if(!this.playlist.current.loaded)
-                {
-                    this.playlist.current.sound.load()
-                }
-
-                this.playlist.current.sound.play()
-                this.playlist.showNotification()
-
-                this.playlist.switching = false
-            })
-        }
-
-        if(import.meta.env.VITE_MUSIC)
-        {
+            this.game.notifications.show(`<div class="top"><div class="song-meta"><div class="title">Now playing<br /><span class="song-name">${current.title}</span><span class="song-artist">${current.artist} • ${current.album}</span></div></div><div class="music-note-icon"></div></div>`, 'song', 5)
+        })
+        this.setMusicPlayer()
+        if(import.meta.env.VITE_MUSIC === 'true')
             this.playlist.play()
+    }
+
+    setMusicPlayer()
+    {
+        this.musicPlayer = this.game.domElement.querySelector('[data-name="bowling-music"]')
+        const songs = this.musicPlayer.querySelector('.js-music-songs')
+        this.playlist.songs.forEach((song, index) =>
+        {
+            const button = document.createElement('button')
+            button.type = 'button'
+            button.textContent = `${index + 1}. ${song.title} — ${song.artist} • ${song.album}`
+            button.addEventListener('click', () => this.playlist.select(index))
+            songs.append(button)
+        })
+        for(const action of ['previous', 'togglePlayPause', 'next'])
+            this.musicPlayer.querySelector(`[data-music-action="${action}"]`).addEventListener('click', () =>
+            {
+                if(action === 'togglePlayPause' && this.game.audio.mute.active)
+                    this.game.audio.mute.deactivate()
+                this.playlist[action]()
+            })
+        this.musicPlayer.querySelector('.js-music-volume').addEventListener('input', (event) => this.playlist.setVolume(Number(event.target.value)))
+        this.updateMusicPlayer()
+    }
+
+    updateMusicPlayer()
+    {
+        if(!this.musicPlayer) return
+        const song = this.playlist.current
+        this.musicPlayer.querySelector('.js-music-title').textContent = song.title
+        this.musicPlayer.querySelector('.js-music-meta').textContent = `${song.artist} • ${song.album}`
+        this.musicPlayer.querySelector('.js-music-status').textContent = this.playlist.status
+        const playing = this.playlist.playing
+        const play = this.musicPlayer.querySelector('[data-music-action="togglePlayPause"]')
+        play.textContent = playing ? 'Pause' : 'Play'
+        play.setAttribute('aria-label', playing ? 'Pause song' : 'Play song')
+        this.musicPlayer.querySelector('.js-music-volume').value = this.playlist.volume
+        const artwork = this.musicPlayer.querySelector('.js-music-artwork')
+        artwork.hidden = !song.artwork
+        if(song.artwork && artwork.getAttribute('src') !== song.artwork)
+        {
+            artwork.src = song.artwork
+            artwork.alt = `${song.album} album artwork`
+            artwork.onerror = () => { artwork.hidden = true }
         }
+        this.musicPlayer.querySelectorAll('.js-music-songs button').forEach((button, index) => button.setAttribute('aria-pressed', String(index === this.playlist.index)))
     }
 
     setAmbiants()
@@ -859,8 +643,7 @@ export class Audio
         {
             Howler.mute(true)
 
-            if(this.playlist?.current)
-                this.playlist.current.sound.pause()
+            this.playlist?.suspend()
         })
 
         window.addEventListener('focus', () =>
@@ -869,8 +652,7 @@ export class Audio
             {
                 Howler.mute(false)
 
-                if(this.playlist?.current)
-                    this.playlist.current.sound.play()
+                this.playlist?.resume()
             }
         })
 
