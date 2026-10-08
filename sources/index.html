@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammed Sheheer CB | Interactive 3D Portfolio</title>
+
+    <meta name="description" content="Interactive 3D Portfolio of Mohammed Sheheer CB - Full Stack & Frontend Developer specializing in React, Next.js, Node.js, and interactive WebGL experiences.">
+
+    <meta itemprop="name" content="Mohammed Sheheer CB">
+    <meta itemprop="description" content="Interactive 3D Portfolio of Mohammed Sheheer CB - Full Stack & Frontend Developer">
+    <meta itemprop="image" content="https://sheheer-portfolio.vercel.app/opengraph-image">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mohammed Sheheer CB | Interactive 3D Portfolio">
+    <meta name="twitter:description" content="Explore the interactive 3D world of Mohammed Sheheer CB - Full Stack & Frontend Developer">
+    <meta name="twitter:image" content="https://sheheer-portfolio.vercel.app/opengraph-image">
+
+    <meta property="og:site_name" content="Mohammed Sheheer CB Portfolio">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sheheer-portfolio.vercel.app/">
+    <meta property="og:title" content="Mohammed Sheheer CB | Interactive 3D Portfolio">
+    <meta property="og:description" content="Explore the interactive 3D world of Mohammed Sheheer CB - Full Stack & Frontend Developer">
+    <meta property="og:image" content="https://sheheer-portfolio.vercel.app/opengraph-image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Nunito:wght@400;700;900&display=block" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./style/index.styl">
+
+    <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" loading="lazy" />
+    <link rel="shortcut icon" href="/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Bruno's" />
+    <link rel="manifest" href="/favicons/site.webmanifest" />
+
+    <link rel="preload" href="/respawns/respawnsReferences-compressed.glb" as="fetch" crossorigin>
+    <link rel="preload" href="/behindTheScene/stars.ktx" as="fetch" crossorigin>
+    <link rel="preload" href="/intro/sound.ktx" as="fetch" crossorigin>
+    <link rel="preload" href="/palette.ktx" as="fetch" crossorigin>
+    
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JMSN30BQ5J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '%VITE_ANALYTICS_TAG%');
+    </script>
+</head>
+<body>
+
+    <div class="js-fonts-loader fonts-loader">
+        <div class="font nunito" data-font="400 20px Nunito"> </div>
+        <div class="font amatic-sc" data-font="700 20px 'Amatic SC'"> </div>
+        <div class="font pally" data-font="500 20px Pally-Medium"> </div>
+    </div>
+    
+    <div class="game">
+
+        <canvas class="js-canvas"></canvas>
+
+        <!-- Touch buttons -->
+        <div class="js-touch-buttons touch-buttons">
+            <div class="js-overlay overlay"></div>
+            <div class="list">
+                <button data-name="interact" class="js-button interact">Interact</button>
+                <button data-name="unstuck" class="js-button unstuck">Unstuck</button>
+                <button data-name="previous" class="js-button previous"></button>
+                <button data-name="next" class="js-button next"></button>
+                <button data-name="open" class="js-button open"></button>
+                <button data-name="close" class="js-button close"></button>
+            </div>
+        </div>
+
+        <!-- Menu trigger -->
+        <button class="js-menu-trigger menu-trigger">
+            <div class="button-inner">
+                <div class="icon-container">
+                    <div class="icon">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+            </div>
+        </button>
+
+        <!-- Map trigger -->
+        <button class="js-map-trigger map-trigger">
+            <div class="button-inner">
+                <div class="icon-container">
+                    <img class="map-icon" src="ui/map.svg" loading="lazy">
+                </div>
+            </div>
+        </button>
+
+        <!-- Menu -->
+        <div class="js-menu menu">
+
+            <div class="inner">
+
+                <button class="js-close close">
+                    <div class="button-inner">
+                        <div class="icon-container">
+                            <img class="icon is-default" src="ui/close.svg" loading="lazy">
+                            <span class="icon is-xbox">A</span>
+                        </div>
+                    </div>
+                </button>
+
+                <div class="js-navigation navigation">
+
+                    <!-- Intro -->
+                    <button class="js-navigation-item item" data-name="home">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="ui/home.svg" loading="lazy">
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Intro -->
+                    <button class="js-navigation-item item" data-name="options">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="ui/gear.svg" loading="lazy">
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Controls -->
+                    <button class="js-navigation-item item" data-name="controls">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="ui/controls/gamepad.svg" loading="lazy">
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Achievements -->
+                    <button class="js-navigation-item item" data-name="achievements">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="ui/medal.svg" loading="lazy">
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Circuit -->
+                    <button class="js-navigation-item item" data-name="circuit">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="ui/wheel.svg" loading="lazy">
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Behind the scene -->
+                    <button class="js-navigation-item item" data-name="behindTheScene">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="ui/question.svg" loading="lazy">
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="container">
+
+                    <div class="previews js-previews">
+
+                        <!-- Intro -->
+                        <div class="js-preview preview home-preview">
+                            <img class="background" src="ui/previews/home.webp" loading="lazy" draggable="false">
+                        </div>
+
+                        <!-- Options -->
+                        <div class="js-preview preview options-preview">
+                            <img class="background" src="ui/previews/options.webp" loading="lazy" draggable="false">
+                        </div>
+
+                        <!-- Controls -->
+                        <div class="js-preview preview controls-preview">
+                            <img class="background" src="ui/previews/controls.webp" loading="lazy" draggable="false">
+                        </div>
+
+                        <!-- Achievements -->
+                        <div class="js-preview preview achievements-preview">
+                            <img class="background" src="ui/previews/achievements.webp" loading="lazy" draggable="false">
+                        </div>
+
+                        <!-- Circuit -->
+                        <div class="js-preview preview circuit-preview">
+                            <img class="background" src="ui/previews/circuit.webp" loading="lazy" draggable="false">
+                        </div>
+
+                        <!-- Behind the scene -->
+                        <div class="js-preview preview behindTheScene-preview">
+                            <img class="background" src="ui/previews/behindTheScene.webp" loading="lazy" draggable="false">
+                        </div>
+
+                    </div>
+
+                    <div class="contents js-contents">
+                        <!-- Intro -->
+                        <div class="js-content content home-content">
+                            <div class="content-inner">
+                                <div class="title">Sheheer's World</div>
+                                <p class="text">Welcome!</p>
+                                <p class="text">My name is <strong>Mohammed Sheheer CB</strong>, and I'm a <strong>Frontend Engineer &amp; Full Stack Architect</strong> based in Thrissur, Kerala, India.</p>
+                                <p class="text">This is my interactive 3D portfolio. Please drive around to explore my projects, skills, career journey, and interactive creations!</p>
+                                <p class="text">Buckle up and have fun exploring!</p>
+                            </div>
+                        </div>
+
+                        <!-- Options -->
+                        <div class="js-content content options-content">
+                            <div class="content-inner">
+                                <div class="title">Options</div>
+                                <table class="options">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                Audio 
+                                            </td>
+                                            <td>
+                                                <button class="js-audio-toggle audio-toggle button is-small has-tooltip">
+                                                    <div class="tooltip">Toggles sound</div>
+                                                    <img class="icon icon-audio audio-on" src="ui/audio/audioOn.svg" loading="lazy">
+                                                    <img class="icon icon-audio audio-off" src="ui/audio/audioOff.svg" loading="lazy">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Quality 
+                                            </td>
+                                            <td>
+                                                <button class="js-quality-toggle quality-toggle button is-small has-tooltip">
+                                                    <div class="tooltip">Toggles some effects</div>
+                                                    <span>Low</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                I'm stuck!
+                                            </td>
+                                            <td>
+                                                <button class="js-respawn button is-small has-tooltip">
+                                                    <div class="tooltip">Teleports you to the closest respawn</div>
+                                                    Respawn
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Reset
+                                            </td>
+                                            <td>
+                                                <button class="js-reset button is-small has-tooltip">
+                                                    <div class="tooltip">Resets every object</div>
+                                                    Reset
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Renderer
+                                            </td>
+                                            <td>
+                                                <button class="js-renderer button is-small is-disabled is-success has-tooltip">
+                                                    <div class="js-tooltip tooltip">Best for performance</div>
+                                                    <span>WebGPU</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Server
+                                            </td>
+                                            <td>
+                                                <button class="js-server button is-small is-disabled has-tooltip">
+                                                    <div class="js-tooltip tooltip"></div>
+                                                    <span>Pending</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <div class="js-content content controls-content">
+                            <div class="content-inner">
+                                <div class="js-tabs tabs">
+                                    <div class="js-tabs-navigation tabs-navigation">
+                                        <button class="js-tabs-navigation-item tab" data-tabs-name="mouse-keyboard">
+                                            <div class="active-background"></div>
+                                            <span class="icon-container">
+                                                <span class="icon icon-mouse-keyboard"></span>
+                                            </span>
+                                            <span class="label">Mouse Keyboard</span>
+                                        </button>
+                                        <button class="js-tabs-navigation-item tab" data-tabs-name="touch">
+                                            <div class="active-background"></div>
+                                            <span class="icon-container">
+                                                <span class="icon icon-touch"></span>
+                                            </span>
+                                            <span class="label">Mobile Tablet</span>
+                                        </button>
+                                        <button class="js-tabs-navigation-item tab" data-tabs-name="gamepad">
+                                            <div class="active-background"></div>
+                                            <span class="icon-container">
+                                                <span class="icon icon-gamepad"></span>
+                                            </span>
+                                            <span class="label">Gamepad</span>
+                                        </button>
+                                    </div>
+                                    <div class="js-tabs-content text text-small tabs-content">
+
+                                        <!-- Mouse / Keyboard -->
+                                        <div class="js-tabs-content-item tabs-content-item mouse-keyboard" data-tabs-name="mouse-keyboard" data-tabs-default>
+                                            <div class="js-tabs-content-inner list">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><span class="key">WASD</span> or <span class="key">ARROWS</span></td>
+                                                            <td>Move around</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">SHIFT</span></td>
+                                                            <td>Boost</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">CTRL LEFT</span> or <span class="key">B</span></td>
+                                                            <td>Brake</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">SPACE</span></td>
+                                                            <td>Jump</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">ENTER</span></td>
+                                                            <td>Interact</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">M</span></td>
+                                                            <td>Map</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">L</span></td>
+                                                            <td>Mute</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">T</span></td>
+                                                            <td>Post a whisper</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">R</span></td>
+                                                            <td>Respawn</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">NUM KEYS</span>/<span class="key">NUM PAD</span></td>
+                                                            <td>Activate hydraulics</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">LEFT CLICK (DRAG)</span></td>
+                                                            <td>Move camera</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">H</span></td>
+                                                            <td>Honk</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- Mobile / Tablet -->
+                                        <div class="js-tabs-content-item tabs-content-item touch" data-tabs-name="touch">
+                                            <div class="js-tabs-content-inner list">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><span class="key">One finger</span></td>
+                                                            <td>Move the car</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Two fingers</span></td>
+                                                            <td>Move camera / zoom</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Tap (on the car)</span></td>
+                                                            <td>Jump</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- Gamepad -->
+                                        <div class="js-tabs-content-item tabs-content-item gamepad" data-tabs-name="gamepad">
+                                            <div class="js-tabs-content-inner list">
+                                            
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="is-gamepad-button is-xbox key">B</span>
+                                                                <span class="is-gamepad-button is-playstation is-icon circle"></span>
+                                                            </td>
+                                                            <td>Boost</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="is-gamepad-button is-xbox key">Y</span>
+                                                                <span class="is-gamepad-button is-playstation is-icon triangle"></span>
+                                                            </td>
+                                                            <td>Jump</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="is-gamepad-button is-xbox key">X</span>
+                                                                <span class="is-gamepad-button is-playstation is-icon square"></span>
+                                                            </td>
+                                                            <td>Brake</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="is-gamepad-button is-xbox key">A</span>
+                                                                <span class="is-gamepad-button is-playstation is-icon cross"></span>
+                                                            </td>
+                                                            <td>Interact / Exit</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="is-gamepad-button is-xbox key">LT</span>
+                                                                <span class="is-gamepad-button is-playstation key">L2</span>
+                                                            </td>
+                                                            <td>Accelerate</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="is-gamepad-button is-xbox key">RT</span>
+                                                                <span class="is-gamepad-button is-playstation key">R2</span>
+                                                            </td>
+                                                            <td>Backward accelerate</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="is-gamepad-button is-xbox key">LB / RB</span>
+                                                                <span class="is-gamepad-button is-playstation key">L1 / R1</span>
+                                                            </td>
+                                                            <td>Hydraulics</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Joystick Left</span></td>
+                                                            <td>Turn wheels</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Joystick Left (press)</span></td>
+                                                            <td>Honk</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Joystick Right</span></td>
+                                                            <td>Move camera</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Joystick Right (press)</span></td>
+                                                            <td>Zoom in/out</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Select</span></td>
+                                                            <td>Reset</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="key">Start</span></td>
+                                                            <td>Pause</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Achievements -->
+                        <div class="js-content content achievements-content">
+                            <div class="content-inner">
+                                <div class="title">Achievements</div>
+                                <div class="js-global-progress global-progress">
+                                    <span class="ratio"><span class="js-current current"></span> / <span class="js-total total"></span></span>
+                                    <span class="js-time time">2h 30min 15s</span>
+                                </div>
+                                <div class="rewards-container">
+                                    <div class="title">Rewards</div>
+                                    <div class="rewards">
+                                        <button class="js-reward reward has-tooltip" data-name="red" data-default>
+                                            <div class="js-tooltip tooltip">Unlock at <strong></strong></div>
+                                            <img class="picture" src="ui/achievements/rewards/red.webp" loading="lazy">
+                                            <div class="lock">
+                                                <img class="lock-icon" src="ui/lock.svg" loading="lazy">
+                                            </div>
+                                        </button>
+                                        <button class="js-reward reward has-tooltip is-locked" data-name="orange">
+                                            <div class="js-tooltip tooltip">Unlock at <strong></strong></div>
+                                            <img class="picture" src="ui/achievements/rewards/orange.webp" loading="lazy">
+                                            <div class="lock">
+                                                <img class="lock-icon" src="ui/lock.svg" loading="lazy">
+                                            </div>
+                                        </button>
+                                        <button class="js-reward reward has-tooltip is-locked" data-name="white">
+                                            <div class="js-tooltip tooltip">Unlock at <strong></strong></div>
+                                            <img class="picture" src="ui/achievements/rewards/white.webp" loading="lazy">
+                                            <div class="lock">
+                                                <img class="lock-icon" src="ui/lock.svg" loading="lazy">
+                                            </div>
+                                        </button>
+                                        <button class="js-reward reward has-tooltip is-locked" data-name="black">
+                                            <div class="js-tooltip tooltip">Unlock at <strong></strong></div>
+                                            <img class="picture" src="ui/achievements/rewards/black.webp" loading="lazy">
+                                            <div class="lock">
+                                                <img class="lock-icon" src="ui/lock.svg" loading="lazy">
+                                            </div>
+                                        </button>
+                                        <button class="js-reward reward has-tooltip is-locked" data-name="flames">
+                                            <div class="js-tooltip tooltip">Unlock at <strong></strong></div>
+                                            <img class="picture" src="ui/achievements/rewards/flames.webp" loading="lazy">
+                                            <div class="lock">
+                                                <img class="lock-icon" src="ui/lock.svg" loading="lazy">
+                                            </div>
+                                        </button>
+                                        <button class="js-reward reward has-tooltip is-locked" data-name="abyssal">
+                                            <div class="js-tooltip tooltip">Unlock at <strong></strong></div>
+                                            <img class="picture" src="ui/achievements/rewards/abyssal.webp" loading="lazy">
+                                            <div class="lock">
+                                                <img class="lock-icon" src="ui/lock.svg" loading="lazy">
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="js-items items"></div>
+
+                                <div class="horizontal-group">
+                                
+                                    <button class="js-button-reset button button-reset">
+                                        Reset achievements
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Circuit -->
+                        <div class="js-content content circuit-content">
+                            <div class="content-inner">
+                                <div class="title">Circuit</div>
+                                
+                                <p class="offline-element text text-danger">
+                                    <img src="ui/warning.svg" loading="lazy" alt="" class="icon"> Server currently offline. Scores can't be saved.
+                                </p>
+
+                                <div class="js-leaderboard-container leaderboard-container has-no-score">
+                                    <div class="no-score">No score yet today</div>
+                                    <table class="js-leaderboard leaderboard online-element">
+                                        <tbody>
+                                        </tbody>
+                                    
+                                    </table>
+
+                                    <p class="online-element reset">
+                                        Resets in <span class="js-reset-time reset-time"></span>
+                                    </p>
+
+                                </div>
+
+                                <div class="js-racing-buttons racing-buttons horizontal-group">
+                                
+                                    <button class="js-button-restart button">
+                                        <svg class="icon icon-restart" width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17 5L10 10V6C5.58172 6 2 9.58172 2 14C2 18.4183 5.58172 22 10 22C14.4183 22 18 18.4183 18 14H20C20 19.5228 15.5228 24 10 24C4.47715 24 0 19.5228 0 14C0 8.47715 4.47715 4 10 4V0L17 5Z" fill="#ffffff"/>
+                                        </svg>
+                                        Restart
+                                    </button>
+                                
+                                    <button class="js-button-end button">
+                                        <svg class="icon icon-flag" class="none" width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.551758 1.7258C6.55166 -2.27398 11.0001 3.40978 19 1.40953L23 13.4096C15.5952 15.2611 11.6175 10.2589 6.30859 12.6762L8.44824 19.0941L6.55176 19.7269L0.551758 1.7258ZM5.26562 2.00328C4.68209 2.01685 4.07959 2.11674 3.42871 2.37242L6.16309 10.5746C7.17704 10.2014 8.1765 10.0274 9.17188 10.0043C10.8337 9.96566 12.395 10.3531 13.7764 10.7299C15.9783 11.3304 17.9741 11.9562 20.3564 11.806L17.6533 3.69664C13.9491 4.17921 11.0237 3.21654 8.72363 2.58922C7.3553 2.21603 6.29108 1.97952 5.26562 2.00328Z" fill="#ffffff"/>
+                                        </svg>
+                                        End
+                                    </button>
+                                
+                                    <button class="js-button-controls button">
+                                        <svg class="icon icon-controller" width="34" height="22" viewBox="0 0 34 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M24.9901 0C27.2187 0 29.1912 1.98468 30.0877 3.96582C30.9844 5.94795 33.3919 15.0915 33.9373 17.4551C34.4824 19.8185 30.7556 22.1815 26.5741 22.1816C24.3923 19.6363 22.2847 16.7432 19.8465 15H14.2235C11.7707 16.7432 9.6507 19.6363 7.4559 22.1816C3.24927 22.1816 -0.494655 19.8185 0.053558 17.4551C0.602246 15.0917 3.02451 5.94816 3.9266 3.96582C4.82847 1.98469 6.81257 0.000114396 9.05453 0H24.9901ZM8.85532 2.01074C8.38039 2.06286 7.8363 2.30078 7.27133 2.77344C6.62835 3.31144 6.08313 4.05636 5.74692 4.79492C5.3762 5.61 4.5895 8.20768 3.78403 11.1035C3.19639 13.2162 2.63705 15.345 2.28207 16.7588L2.0018 17.9072C1.9553 18.1081 1.96994 18.5603 2.69711 19.124C3.29365 19.5864 5.2646 20.0018 6.56332 20.1357C6.88401 19.7496 7.20912 19.3522 7.54086 18.9434C8.08227 18.2761 8.64694 17.5798 9.22153 16.9062C10.36 15.5716 11.6783 14.3885 13.1112 13.3701L13.6307 13H20.534L21.0555 13.373C22.4808 14.3921 23.7002 15.5757 24.8319 16.9102C25.4031 17.5837 25.9636 18.2811 26.5018 18.9482C26.83 19.3551 27.1523 19.7504 27.4696 20.1348C28.7512 20 30.7095 19.5872 31.2987 19.1279C32.0175 18.5673 32.0359 18.1133 31.9881 17.9053L31.7098 16.7559C31.3569 15.3419 30.8007 13.2132 30.2166 11.1006C29.4159 8.20421 28.6341 5.60492 28.2655 4.79004C27.9309 4.05089 27.3888 3.30754 26.7508 2.77051C26.1096 2.23085 25.4989 2 24.9901 2H9.05453L8.85532 2.01074ZM12.0096 7H14.0096V9H12.0096V11H10.0096V9H8.00961V7H10.0096V5H12.0096V7ZM24.0096 11H22.0096V9H24.0096V11ZM22.0096 9H20.0096V7H22.0096V9ZM26.0096 9H24.0096V7H26.0096V9ZM24.0096 7H22.0096V5H24.0096V7Z" fill="#ffffff"/>
+                                        </svg>
+                                        Controls
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Behind the scene -->
+                        <div class="js-content content behindTheScene-content">
+                            <div class="content-inner">
+                                <div class="title">Behind the scene</div>
+                                <p class="text">
+                                    Thank you for visiting my portfolio!
+                                    <br />I design &amp; develop high-performance web experiences using React, Next.js, Node.js, and Three.js WebGL graphics.
+                                </p>
+                                
+                                <h2 class="title">Three.js &amp; WebGL</h2>
+                                <p class="text">
+                                    <a href="https://threejs.org" target="_blank" rel="noreferrer">Three.js</a> is the 3D graphics library powering this interactive world.
+                                    <br />Built using Three.js Shading Language (TSL) and WebGL / WebGPU acceleration.
+                                </p>
+                                
+                                <h2 class="title">Connect with Me</h2>
+                                <p class="text">
+                                    Feel free to check out my open-source projects on <a href="https://github.com/muhammedsheheercb" target="_blank" rel="noreferrer">GitHub</a> or connect with me on <a href="http://linkedin.com/in/mohammed-sheheer-c-b-" target="_blank" rel="noreferrer">LinkedIn</a>.
+                                </p>
+
+                                <h2 class="title">Tech Stack &amp; Libraries</h2>
+                                <ul class="text">
+                                    <li>Physics library ⇒ <a href="https://rapier.rs" target="_blank" rel="noreferrer">Rapier 3D</a></li>
+                                    <li>Audio library ⇒ <a href="https://howlerjs.com" target="_blank" rel="noreferrer">Howler.js</a></li>
+                                    <li>Frameworks ⇒ React, Next.js, Node.js, Express</li>
+                                </ul>
+
+                                <p class="text text-faded text-align-right">
+                                    — Mohammed Sheheer CB
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Modals -->
+        <div class="js-modals modals">
+
+            <!-- Circuit end -->
+            <div class="js-modal modal circuit-end" data-name="circuit-end">
+                <div class="container">
+                    <div class="content">
+                        <button class="js-close close">
+                            <img class="icon is-default" src="ui/close.svg" loading="lazy">
+                            <span class="icon is-xbox">A</span>
+                        </button>
+
+                        <div class="your-time">
+                            Your time
+                            <br /><span class="js-time value">00:00:000</span>
+                        </div>
+
+                        <p class="offline-element text text-danger">
+                            <img src="ui/warning.svg" loading="lazy" alt="" class="icon"> Server currently offline. Scores can't be saved.
+                        </p>
+
+                        <p class="not-top-10 text">
+                            Sorry, you didn't make it to the top 10.
+                        </p>
+
+                        <div class="horizontal-group">
+                        
+                            <form class="js-input-group input-group is-name-tag online-element" action="#">
+                                <div class="js-input-flag input-flag">
+                                    <div class="js-flag-button flag-button">
+                                        <img class="js-flag flag" src="ui/flags/fr.webp" loading="lazy">
+                                        <svg class="none" width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.551758 1.7258C6.55166 -2.27398 11.0001 3.40978 19 1.40953L23 13.4096C15.5952 15.2611 11.6175 10.2589 6.30859 12.6762L8.44824 19.0941L6.55176 19.7269L0.551758 1.7258ZM5.26562 2.00328C4.68209 2.01685 4.07959 2.11674 3.42871 2.37242L6.16309 10.5746C7.17704 10.2014 8.1765 10.0274 9.17188 10.0043C10.8337 9.96566 12.395 10.3531 13.7764 10.7299C15.9783 11.3304 17.9741 11.9562 20.3564 11.806L17.6533 3.69664C13.9491 4.17921 11.0237 3.21654 8.72363 2.58922C7.3553 2.21603 6.29108 1.97952 5.26562 2.00328Z" fill="white"/>
+                                        </svg>
+                                    </div>
+
+                                    <div class="js-flag-select flag-select">
+                                        <div class="js-flag-close close-mini">
+                                            <img src="ui/close-mini.svg" loading="lazy">
+                                        </div>
+                                        <div class="js-flag-remove remove">
+                                            <img src="ui/remove.svg" loading="lazy">
+                                        </div>
+                                        <input type="text" class="js-flag-search search" placeholder="Search…">
+                                        <div class="js-no-result no-result">
+                                            No result
+                                        </div>
+                                        <div class="choices">
+                                            <div class="js-scroller scroller">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input class="js-input js-main-focus input-text" type="text" placeholder="---" maxlength="3" />
+                                <button class="submit has-text">
+                                    Submit
+                                </button>
+                            </form>
+
+                            <div class="or">
+                                or
+                            </div>
+
+                            <button class="js-button-restart button">
+                                <svg class="icon icon-restart" width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17 5L10 10V6C5.58172 6 2 9.58172 2 14C2 18.4183 5.58172 22 10 22C14.4183 22 18 18.4183 18 14H20C20 19.5228 15.5228 24 10 24C4.47715 24 0 19.5228 0 14C0 8.47715 4.47715 4 10 4V0L17 5Z" fill="#ffffff"/>
+                                </svg>
+                                Restart
+                            </button>
+
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discord -->
+            <div class="js-modal modal discord" data-name="discord">
+                <div class="container">
+                    <div class="content">
+                        <button class="js-close close">
+                            <img class="icon is-default" src="ui/close.svg" loading="lazy">
+                            <span class="icon is-xbox">A</span>
+                        </button>
+
+                        <div class="title"><img src="ui/discord.svg" loading="lazy"> Discord</div>
+
+                        <div class="items">
+                            <div class="item">
+                                <div class="title-container">
+                                    <div class="line left"></div>
+                                    <div class="title">Public server</div>
+                                    <div class="line right"></div>
+                                </div>
+                                <p>Come hang out with the community<span class="optional">, show us your projects and ask us anything</span>.</p>
+                                <div class="button-container">
+                                    <a href="https://discord.com/channels/769928116701233152/1445064878384480288" target="_blank" rel="noreferrer" class="button">
+                                        Join server
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="title-container">
+                                    <div class="line left"></div>
+                                    <div class="title">Private messages</div>
+                                    <div class="line right"></div>
+                                </div>
+                                <p>Contact me directly.<span class="optional"><br />I have to warn you, I try to answer everyone, but it might take a while.</span></p>
+                                <div class="button-container">
+                                    <a href="https://discord.com/users/202907325722263553" target="_blank" rel="noreferrer" class="button">
+                                        Start chating
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="js-modal modal freelance skills" data-name="freelance">
+                <div class="container">
+                    <div class="content" style="max-width: 720px; width: 92%; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.15); background: linear-gradient(145deg, #1e1927, #130f1a); padding: 32px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); max-height: 85vh; overflow-y: auto;">
+                        <button class="js-close close">
+                            <img class="icon is-default" src="ui/close.svg" loading="lazy">
+                            <span class="icon is-xbox">A</span>
+                        </button>
+
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #6366f1, #a855f7); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 1.2rem;">⚡</div>
+                            <h2 class="title" style="font-size: 1.8rem; font-weight: 800; color: #ffffff; margin: 0;">Technical Skills</h2>
+                        </div>
+                        <p style="color: #a78bfa; font-weight: 600; font-size: 0.95rem; margin-bottom: 1.8rem;">
+                            Mohammed Sheheer CB • Full Stack &amp; Frontend Web Developer
+                        </p>
+
+                        <!-- Skill Categories Grid -->
+                        <div class="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 2rem;">
+                            
+                            <!-- Category: Frontend -->
+                            <div class="skill-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #60a5fa; font-weight: 700; font-size: 1.05rem;">
+                                    <span>💻</span> Frontend Development
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <span class="tech-badge" style="background: rgba(96, 165, 250, 0.12); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        HTML5
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(96, 165, 250, 0.12); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        CSS3
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(96, 165, 250, 0.12); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        JavaScript (ES6+)
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(96, 165, 250, 0.12); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        TypeScript
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(96, 165, 250, 0.12); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        React.js
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(96, 165, 250, 0.12); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        Next.js
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(96, 165, 250, 0.12); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        Tailwind CSS
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Category: Backend -->
+                            <div class="skill-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #4ade80; font-weight: 700; font-size: 1.05rem;">
+                                    <span>⚙️</span> Backend Development
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <span class="tech-badge" style="background: rgba(74, 222, 128, 0.12); color: #86efac; border: 1px solid rgba(74, 222, 128, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Node.js
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(74, 222, 128, 0.12); color: #86efac; border: 1px solid rgba(74, 222, 128, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Express.js
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(74, 222, 128, 0.12); color: #86efac; border: 1px solid rgba(74, 222, 128, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        REST APIs
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Category: Databases -->
+                            <div class="skill-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #f43f5e; font-weight: 700; font-size: 1.05rem;">
+                                    <span>🗄️</span> Databases
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <span class="tech-badge" style="background: rgba(244, 63, 94, 0.12); color: #fca5a5; border: 1px solid rgba(244, 63, 94, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        PostgreSQL
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(244, 63, 94, 0.12); color: #fca5a5; border: 1px solid rgba(244, 63, 94, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        MongoDB
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(244, 63, 94, 0.12); color: #fca5a5; border: 1px solid rgba(244, 63, 94, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Neon DB
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Category: Tools & Platforms -->
+                            <div class="skill-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #fbbf24; font-weight: 700; font-size: 1.05rem;">
+                                    <span>🛠️</span> Tools &amp; Platforms
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <span class="tech-badge" style="background: rgba(251, 191, 36, 0.12); color: #fde68a; border: 1px solid rgba(251, 191, 36, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Git
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(251, 191, 36, 0.12); color: #fde68a; border: 1px solid rgba(251, 191, 36, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        GitHub
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(251, 191, 36, 0.12); color: #fde68a; border: 1px solid rgba(251, 191, 36, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        VS Code
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(251, 191, 36, 0.12); color: #fde68a; border: 1px solid rgba(251, 191, 36, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Vercel
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(251, 191, 36, 0.12); color: #fde68a; border: 1px solid rgba(251, 191, 36, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Railway
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Category: Other Core Skills -->
+                            <div class="skill-card" style="grid-column: 1 / -1; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #c084fc; font-weight: 700; font-size: 1.05rem;">
+                                    <span>🚀</span> Web Specializations &amp; Practices
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <span class="tech-badge" style="background: rgba(192, 132, 252, 0.12); color: #e9d5ff; border: 1px solid rgba(192, 132, 252, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Responsive Web Design
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(192, 132, 252, 0.12); color: #e9d5ff; border: 1px solid rgba(192, 132, 252, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        Progressive Web Apps (PWA)
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(192, 132, 252, 0.12); color: #e9d5ff; border: 1px solid rgba(192, 132, 252, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        API Integration &amp; Architecture
+                                    </span>
+                                    <span class="tech-badge" style="background: rgba(192, 132, 252, 0.12); color: #e9d5ff; border: 1px solid rgba(192, 132, 252, 0.25); padding: 5px 11px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;">
+                                        UI/UX Implementation
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer Contact CTA -->
+                        <div style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                            <div>
+                                <div style="color: #ffffff; font-weight: 700; font-size: 0.95rem;">Interested in collaborating?</div>
+                                <div style="color: #94a3b8; font-size: 0.82rem;">Let's build scalable web applications and high-performance interfaces.</div>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="mailto:muhammedsheheercb@gmail.com" class="button" style="padding: 8px 14px; border: 1px solid #5390ff; color: #5390ff; font-weight: 700; text-decoration: none; font-size: 0.85rem;">
+                                    Email Me
+                                </a>
+                                <a href="https://wa.me/918086860867" target="_blank" rel="noreferrer" class="button" style="padding: 8px 14px; border: 1px solid #a2ffab; color: #a2ffab; font-weight: 700; text-decoration: none; font-size: 0.85rem;">
+                                    WhatsApp
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Overview -->
+            <div class="js-modal modal portfolio" data-name="portfolio">
+                <div class="container">
+                    <div class="content" style="max-width: 720px; border-radius: 20px; border: 1px solid rgba(0, 240, 255, 0.35); background: radial-gradient(ellipse at top left, #081d38, #030a17); max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.15); padding: 28px 32px;">
+                        <button class="js-close close">
+                            <img class="icon is-default" src="ui/close.svg" loading="lazy">
+                            <span class="icon is-xbox">A</span>
+                        </button>
+
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+                            <div style="width: 10px; height: 10px; border-radius: 50%; background: #00f0ff; box-shadow: 0 0 10px #00f0ff;"></div>
+                            <div class="title" style="color: #00f0ff; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; margin: 0;">Mohammed Sheheer CB</div>
+                        </div>
+                        
+                        <p class="text" style="color: #94a3b8; font-weight: 700; font-size: 0.9rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #38bdf8;">Full Stack &amp; Frontend Engineer</span>
+                            <span style="color: #475569;">•</span>
+                            <span style="color: #cbd5e1;">Thrissur, Kerala, India</span>
+                        </p>
+
+                        <p class="text" style="color: #e2e8f0; line-height: 1.6; font-size: 0.88rem; margin-bottom: 1.5rem; background: rgba(255, 255, 255, 0.03); padding: 12px 16px; border-radius: 10px; border-left: 3px solid #00f0ff;">
+                            Passionate software developer specializing in high-performance web applications, scalable full-stack architectures, clean code principles, and interactive 3D WebGL experiences.
+                        </p>
+
+                        <!-- Career & Education Timeline -->
+                        <div style="margin-bottom: 1.8rem; background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 14px; border: 1px solid rgba(0, 240, 255, 0.2);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(0, 240, 255, 0.15); padding-bottom: 10px;">
+                                <h4 style="color: #00f0ff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px;">
+                                    <span>🎓</span> Education &amp; <span>💼</span> Career Journey
+                                </h4>
+                                <span style="font-size: 0.72rem; color: #64748b; background: rgba(255, 255, 255, 0.05); padding: 3px 8px; border-radius: 12px;">Chronological Order</span>
+                            </div>
+
+                            <div style="position: relative; border-left: 2px solid rgba(0, 240, 255, 0.35); padding-left: 20px; margin-left: 8px; display: flex; flex-direction: column; gap: 16px;">
+                                
+                                <!-- 2015 SSLC -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -25px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #00f0ff; box-shadow: 0 0 8px #00f0ff; border: 2px solid #030a17;"></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 0.72rem; color: #00f0ff; font-weight: 800; background: rgba(0, 240, 255, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0, 240, 255, 0.3);">2015</span>
+                                        <strong style="color: #ffffff; font-size: 0.9rem;">SSLC (10th Standard)</strong>
+                                        <span style="font-size: 0.65rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 1px 6px; border-radius: 4px; font-weight: 600;">Education</span>
+                                    </div>
+                                    <p style="font-size: 0.78rem; color: #94a3b8; margin-top: 4px; margin-bottom: 0; line-height: 1.4;">Kerala State Education Board — Foundational secondary school certification.</p>
+                                </div>
+
+                                <!-- 2017 Plus Two -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -25px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #00f0ff; box-shadow: 0 0 8px #00f0ff; border: 2px solid #030a17;"></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 0.72rem; color: #00f0ff; font-weight: 800; background: rgba(0, 240, 255, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0, 240, 255, 0.3);">2017</span>
+                                        <strong style="color: #ffffff; font-size: 0.9rem;">Plus Two (12th Standard)</strong>
+                                        <span style="font-size: 0.65rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 1px 6px; border-radius: 4px; font-weight: 600;">Education</span>
+                                    </div>
+                                    <p style="font-size: 0.78rem; color: #94a3b8; margin-top: 4px; margin-bottom: 0; line-height: 1.4;">Higher Secondary Education Board — Higher secondary qualification.</p>
+                                </div>
+
+                                <!-- 2020 Degree -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -25px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #00f0ff; box-shadow: 0 0 8px #00f0ff; border: 2px solid #030a17;"></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 0.72rem; color: #00f0ff; font-weight: 800; background: rgba(0, 240, 255, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0, 240, 255, 0.3);">2020</span>
+                                        <strong style="color: #ffffff; font-size: 0.9rem;">Degree (Graduation)</strong>
+                                        <span style="font-size: 0.65rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 1px 6px; border-radius: 4px; font-weight: 600;">Education</span>
+                                    </div>
+                                    <p style="font-size: 0.78rem; color: #94a3b8; margin-top: 4px; margin-bottom: 0; line-height: 1.4;">Bachelor's Degree Graduate — Undergraduate academic degree completion.</p>
+                                </div>
+
+                                <!-- 2022 - 2024 MBA -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -25px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #fbbf24; box-shadow: 0 0 8px #fbbf24; border: 2px solid #030a17;"></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 800; background: rgba(251, 191, 36, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(251, 191, 36, 0.3);">Apr 2022 – Apr 2024</span>
+                                        <strong style="color: #ffffff; font-size: 0.9rem;">Master of Business Administration (MBA)</strong>
+                                        <span style="font-size: 0.65rem; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 1px 6px; border-radius: 4px; font-weight: 600;">Post Graduation</span>
+                                    </div>
+                                    <p style="font-size: 0.78rem; color: #cbd5e1; margin-top: 4px; margin-bottom: 0; line-height: 1.4;">SGUV University — Strategic business management, agile methodologies, product planning &amp; team leadership.</p>
+                                </div>
+
+                                <!-- 2024 MERN Stack -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -25px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #a855f7; box-shadow: 0 0 8px #a855f7; border: 2px solid #030a17;"></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 0.72rem; color: #c084fc; font-weight: 800; background: rgba(192, 132, 252, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(192, 132, 252, 0.3);">Apr 2024 – Dec 2024</span>
+                                        <strong style="color: #ffffff; font-size: 0.9rem;">MERN Stack Development Certificate</strong>
+                                        <span style="font-size: 0.65rem; color: #c084fc; background: rgba(192, 132, 252, 0.1); padding: 1px 6px; border-radius: 4px; font-weight: 600;">Specialization</span>
+                                    </div>
+                                    <p style="font-size: 0.78rem; color: #cbd5e1; margin-top: 4px; margin-bottom: 0; line-height: 1.4;">Brototype – Ernakulam — Intensive full-stack engineering, MongoDB, Express, React, Node.js, REST APIs &amp; system architecture.</p>
+                                </div>
+
+                                <!-- 2025 Present Full Stack -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -25px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981; border: 2px solid #030a17;"></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 0.72rem; color: #34d399; font-weight: 800; background: rgba(52, 211, 153, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(52, 211, 153, 0.3);">Jan 2025 – Present</span>
+                                        <strong style="color: #ffffff; font-size: 0.9rem;">Full Stack Developer</strong>
+                                        <span style="font-size: 0.65rem; color: #34d399; background: rgba(52, 211, 153, 0.15); padding: 1px 6px; border-radius: 4px; font-weight: 700;">Active Role</span>
+                                    </div>
+                                    <p style="font-size: 0.78rem; color: #cbd5e1; margin-top: 4px; margin-bottom: 0; line-height: 1.4;">Yenrich31 – Kerala (Remote) — Developing Next.js booking systems, React UI components, Tailwind CSS styling, and RESTful API integrations.</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Technical Skills Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 1.8rem;">
+                            <div style="background: rgba(255, 255, 255, 0.04); padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(0, 240, 255, 0.15);">
+                                <h4 style="color: #00f0ff; margin-bottom: 8px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800;">Frontend Technologies</h4>
+                                <p style="font-size: 0.76rem; color: #94a3b8; line-height: 1.5; margin: 0;">Next.js, React, TypeScript, JavaScript (ES6+), Tailwind CSS, GSAP, Framer Motion, HTML5/CSS3</p>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.04); padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(0, 240, 255, 0.15);">
+                                <h4 style="color: #00f0ff; margin-bottom: 8px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800;">Backend &amp; Database</h4>
+                                <p style="font-size: 0.76rem; color: #94a3b8; line-height: 1.5; margin: 0;">Node.js, Express.js, Hono, RESTful APIs, Clean Architecture, MongoDB, PostgreSQL, Razorpay</p>
+                            </div>
+                        </div>
+
+                        <!-- Action & Social Links -->
+                        <div style="display: flex; justify-content: flex-start; flex-wrap: wrap; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 16px;">
+                            <a href="mailto:muhammedsheheercb@gmail.com" class="button" style="padding: 9px 18px; border: 1px solid #00f0ff; color: #00f0ff; background: rgba(0, 240, 255, 0.08); border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 700; transition: all 0.2s;">📧 Email Me</a>
+                            <a href="https://wa.me/918086860867" target="_blank" rel="noreferrer" class="button" style="padding: 9px 18px; border: 1px solid #10b981; color: #10b981; background: rgba(16, 185, 129, 0.08); border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 700; transition: all 0.2s;">💬 WhatsApp</a>
+                            <a href="https://github.com/muhammedsheheercb" target="_blank" rel="noreferrer" class="button" style="padding: 9px 18px; border: 1px solid rgba(255, 255, 255, 0.3); color: #ffffff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 700; transition: all 0.2s;">🐙 GitHub ↗</a>
+                            <a href="http://linkedin.com/in/mohammed-sheheer-c-b-" target="_blank" rel="noreferrer" class="button" style="padding: 9px 18px; border: 1px solid #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.08); border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 700; transition: all 0.2s;">💼 LinkedIn ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="js-modal modal map" data-name="map">
+
+                <button class="js-close close">
+                    <div class="button-inner">
+                        <div class="icon-container">
+                            <img class="icon is-default" src="ui/close.svg" loading="lazy">
+                            <span class="icon is-xbox">A</span>
+                        </div>
+                    </div>
+                </button>
+
+                <div class="js-map-container map-container">
+                    <img class="js-texture texture" loading="lazy">
+                    <div class="js-player player"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Notifications -->
+        <div class="js-notifications notifications">
+            <div class="js-items items"></div>
+        </div>
+
+    </div>
+
+    <script type="module" src="./index.js"></script>
+</body>
+</html>
